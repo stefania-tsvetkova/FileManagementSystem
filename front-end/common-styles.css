@@ -1,0 +1,14 @@
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+a {
+    color: #4c75af;
+}
+a:hover, a:visited {
+    color: #243751;
+}
