@@ -24,7 +24,7 @@ export class UserService {
         });
 
         return requestService.post('../../../back-end/register.php', data)
-            .then(response => response == '1')
+            .then(response => response === '1')
             .catch(error => notificationService.error(error));
     }
 
@@ -35,7 +35,7 @@ export class UserService {
         });
 
         return requestService.get('../../../back-end/login.php', data)
-            .then(response => response == '1')
+            .then(response => response === '' ? null : JSON.parse(response))
             .catch(error => notificationService.error(error));
     }
 }

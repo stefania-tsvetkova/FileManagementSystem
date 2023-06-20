@@ -6,7 +6,7 @@ $db = new Db();
 $connection = $db->getConnection();
 
 $statement = $connection->prepare("
-    SELECT COUNT(*) AS count FROM users
+    SELECT id, email, name, familyName AS count FROM users
     WHERE email = :email AND passwordHash = :passwordHash
 ");
 
@@ -17,5 +17,5 @@ $statement->execute([
 
 $userCount = $statement->fetch(PDO::FETCH_ASSOC);
 
-print_r($userCount["count"] == 1);
+print_r($userCount ? json_encode($userCount) : null);
 ?>

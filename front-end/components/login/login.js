@@ -3,7 +3,7 @@ import { HashHelper } from '../../helpers/hash.helper.js';
 import { UrlHelper} from '../../helpers/url.helper.js'
 import { DataValidationHelper} from '../../helpers/data-validation.helper.js'
 import { FormHelper} from '../../helpers/form.helper.js'
-import { NotificationService } from "../../services/notification.service.js";
+import { UserSessionService } from "../../services/user-session.service.js";
 
 window.login = login;
 window.bodyLoaded = bodyLoaded;
@@ -13,7 +13,7 @@ const hashHelper = new HashHelper();
 const urlHelper = new UrlHelper();
 const dataValidationHelper = new DataValidationHelper();
 const formHelper = new FormHelper();
-const notificationService = new NotificationService();
+const userSessionService = new UserSessionService();
 
 function bodyLoaded() {
     const url = urlHelper.constructUrl('register');
@@ -31,12 +31,14 @@ async function login() {
     }
     
     const userData = await getUserData(formData);
-    const isLoggedIn = await userService.login(userData);
+    const user = await userService.login(userData);
     
-    if (!isLoggedIn) {
+    if (user === null) {
         formHelper.displayError('login-button', 'Username or password is incorrect');
         return;
     }
+
+    userSessionService.setCurrentUser(user);
 
     const url = urlHelper.constructUrl('home');
     window.location.replace(url);

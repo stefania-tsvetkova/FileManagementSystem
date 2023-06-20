@@ -1,10 +1,15 @@
 import { UserSessionService } from './services/user-session.service.js';
-import { UrlHelper } from './services/url.service.js';
+import { UrlHelper } from './helpers/url.helper.js';
 
 const userSessionService = new UserSessionService();
 const urlHelper = new UrlHelper();
     
+let url;
 if (!userSessionService.isUserLoggedIn()) {
-    const url = urlHelper.constructUrl('register');
-    window.location.replace(url);
+    url = urlHelper.constructUrl('register');
 }
+else {
+    url = urlHelper.constructUrl('home');
+}
+
+window.location.replace(url);

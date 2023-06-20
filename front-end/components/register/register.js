@@ -4,6 +4,7 @@ import { UrlHelper} from '../../helpers/url.helper.js'
 import { DataValidationHelper} from '../../helpers/data-validation.helper.js'
 import { FormHelper} from '../../helpers/form.helper.js'
 import { NotificationService } from "../../services/notification.service.js";
+import { UserSessionService } from "../../services/user-session.service.js";
 
 window.register = register;
 window.bodyLoaded = bodyLoaded;
@@ -14,6 +15,7 @@ const urlHelper = new UrlHelper();
 const dataValidationHelper = new DataValidationHelper();
 const formHelper = new FormHelper();
 const notificationService = new NotificationService();
+const userSessionService = new UserSessionService();
 
 function bodyLoaded() {
     const url = urlHelper.constructUrl('login');
@@ -37,6 +39,9 @@ async function register() {
         notificationService.error("There was an error. Please try again later");
         return;
     }
+
+    const user = await userService.login(userData);
+    userSessionService.setCurrentUser(user);
 
     const url = urlHelper.constructUrl('home');
     window.location.replace(url);
