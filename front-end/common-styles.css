@@ -9,6 +9,12 @@
 a {
     color: #4c75af;
 }
+
 a:hover, a:visited {
     color: #243751;
+}
+
+.center-content {
+    margin: auto;
+    text-align: center;
 }

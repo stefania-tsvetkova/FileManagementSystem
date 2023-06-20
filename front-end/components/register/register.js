@@ -1,31 +1,45 @@
 import { UserService } from '../../services/user.service.js';
-import { HashService } from '../../services/hash.service.js';
-import { UrlService} from '../../services/url.service.js'
+import { HashHelper } from '../../helpers/hash.helper.js';
+import { UrlHelper} from '../../helpers/url.helper.js'
+import { DataValidationHelper} from '../../helpers/data-validation.helper.js'
+import { FormHelper} from '../../helpers/form.helper.js'
+import { NotificationService } from "../../services/notification.service.js";
 
 window.register = register;
 window.bodyLoaded = bodyLoaded;
 
 const userService = new UserService();
-const hashService = new HashService();
-const urlService = new UrlService();
+const hashHelper = new HashHelper();
+const urlHelper = new UrlHelper();
+const dataValidationHelper = new DataValidationHelper();
+const formHelper = new FormHelper();
+const notificationService = new NotificationService();
 
 function bodyLoaded() {
-    const url = urlService.constructUrl('login');
+    const url = urlHelper.constructUrl('login');
     document.getElementById("login-button").setAttribute("href", url);
 }
 
 async function register() {
-    clearFormErrors();
+    formHelper.clearFormErrors();
     
     const formData = getFormData();
 
     const isFormValid = await validateForm(formData);
     if (!isFormValid) {
-        return false;
+        return;
     }
     
     const userData = await getUserData(formData);
-    userService.register(userData);
+    const isRegistered = await userService.register(userData);
+    
+    if (!isRegistered) {
+        notificationService.error("There was an error. Please try again later");
+        return;
+    }
+
+    const url = urlHelper.constructUrl('home');
+    window.location.replace(url);
 };
 
 async function getUserData(formData) {
@@ -33,7 +47,7 @@ async function getUserData(formData) {
         email: formData.email.value,
         name: formData.name.value,
         familyName: formData.familyName.value,
-        passwordHash: await hashService.getSHA256Hash(formData.password.value)
+        passwordHash: await hashHelper.getSHA256Hash(formData.password.value)
     };
 }
 
@@ -68,107 +82,66 @@ async function validateForm(formData) {
     let isFormValid = true;
 
     isFormValid &= 
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.email, 
-            notNullOrEmpty, 
+            dataValidationHelper.notNullOrEmpty, 
             'Email is required'
         )
         &&
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.email, 
-            isEmailValid, 
+            dataValidationHelper.isEmailValid, 
             'Invalid email'
         )
         &&
-        (await isInputValueValidAsync(
+        (await formHelper.isInputValueValidAsync(
             formData.email, 
             isEmailNotUsed, 
             'User with this email already exists'
         ));
 
     isFormValid &= 
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.name, 
-            notNullOrEmpty, 
+            dataValidationHelper.notNullOrEmpty, 
             'Name is required'
         )
         &&
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.name, 
-            isNameValid, 
+            dataValidationHelper.isNameValid, 
             'Name must be maximum 50 characters'
         );
 
     isFormValid &= 
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.familyName, 
-            notNullOrEmpty, 
+            dataValidationHelper.notNullOrEmpty, 
             'Family name is required'
         )
         &&
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.familyName, 
-            isNameValid, 
+            dataValidationHelper.isNameValid, 
             'Family name must be maximum 50 characters'
         );
 
     isFormValid &= 
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.password, 
-            notNullOrEmpty, 
+            dataValidationHelper.notNullOrEmpty, 
             'Password is required'
         )
         &&
-        isInputValueValid(
+        formHelper.isInputValueValid(
             formData.password, 
-            isPasswordValid, 
+            dataValidationHelper.isPasswordValid, 
             'Password must be between 5 and 50 characters, and can contain uppercase letters, lowercase letters, and numbers'
         );
 
     return isFormValid;
 }
 
-function isInputValueValid(input, isValidFunction, errorMessage) {
-    if (!isValidFunction(input.value)) {
-        displayError(input.id, errorMessage);
-        return false;
-    }
-
-    return true;
-}
-
-async function isInputValueValidAsync(input, isValidFunction, errorMessage) {
-    if (!(await isValidFunction(input.value))) {
-        displayError(input.id, errorMessage);
-        return false;
-    }
-
-    return true;
-}
-
-function notNullOrEmpty(value) {
-    return value !== null && value !== '';
-}
-
-function isEmailValid(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
 async function isEmailNotUsed(email) {
     return !(await userService.emailExists(email));
-}
-
-function isNameValid(name) {
-    return name.length <= 50;
-}
-
-function isPasswordValid(password) {
-    const passwordRegex = /^[a-zA-Z0-9]{5,50}$/;
-    return passwordRegex.test(password);
-}
-
-function displayError(inputId, errorMessage) {
-    const errorElement = document.getElementById(`${inputId}-error`);
-    errorElement.textContent = errorMessage;
 }

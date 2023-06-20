@@ -7,32 +7,20 @@
     <meta charset="UTF-8">
 
     <link href="../../common-styles.css" rel="stylesheet">
-    <link href="./register.css" rel="stylesheet">
+    <link href="./login.css" rel="stylesheet">
 
-    <script type="module" src="register.js" async></script>
+    <script type="module" src="login.js" async></script>
 </head>
 
 <body onload="bodyLoaded()">
     <h1 class="title">File management system</h1>
 
     <div class="centered-container">
-        <form id="registration-form" class="centered-form" onsubmit="event.preventDefault(); register();">
+        <form id="registration-form" class="centered-form" onsubmit="event.preventDefault(); login();">
             <div>
                 <label for="email">Email:</label>
                 <input type="text" id="email">
                 <span id="email-error" class="error"></span>
-            </div>
-
-            <div>
-                <label for="name">First Name:</label>
-                <input type="text" id="name">
-                <span id="name-error" class="error"></span>
-            </div>
-
-            <div>
-                <label for="family-name">Last Name:</label>
-                <input type="text" id="family-name">
-                <span id="family-name-error" class="error"></span>
             </div>
 
             <div>
@@ -42,15 +30,16 @@
             </div>
 
             <div class="center-content">
-                <button type="submit">
-                    Register
+                <button type="submit" id="login-button">
+                    Login
                 </button>
+                <span id="login-button-error" class="error"></span>
             </div>
 
             <div class="center-content">
                 <span>
-                    Already have an account?
-                    <a id="login-button">Login</a>
+                    Don't have an account?
+                    <a id="register-button">Register</a>
                 </span>
             </div>
         </form>

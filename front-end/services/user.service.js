@@ -1,18 +1,16 @@
 import { RequestService } from "./request.service.js";
 import { NotificationService } from "./notification.service.js";
-import { UrlService } from "./url.service.js";
 
 const requestService = new RequestService();
 const notificationService = new NotificationService();
-const urlService = new UrlService();
 
 export class UserService {
-    async emailExists(email) {
+    emailExists(email) {
         let data = new URLSearchParams({
             email: email
         });
 
-        return await requestService.get('../../../back-end/emailExists.php', data)
+        return requestService.get('../../../back-end/emailExists.php', data)
             .then(response => response == '1')
             .catch(error => notificationService.error(error));
     }
@@ -25,15 +23,19 @@ export class UserService {
             passwordHash: user.passwordHash
         });
 
-        const isSuccessful = requestService.post('../../../back-end/register.php', data)
+        return requestService.post('../../../back-end/register.php', data)
             .then(response => response == '1')
             .catch(error => notificationService.error(error));
+    }
 
-        if (!isSuccessful) {
-            notificationService.error(error);
-        }
+    login(user) {
+        let data = new URLSearchParams({
+            email: user.email,
+            passwordHash: user.passwordHash
+        });
 
-        const url = urlService.constructUrl('home');
-        window.location.replace(url);
+        return requestService.get('../../../back-end/login.php', data)
+            .then(response => response == '1')
+            .catch(error => notificationService.error(error));
     }
 }

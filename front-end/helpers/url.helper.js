@@ -1,6 +1,6 @@
 import { CODE_DIRECTORY, COMPONENTS_DIRECTORY } from '../constants/url.constants.js';
 
-export class UrlService {
+export class UrlHelper {
     constructUrl(componentName) {
         const currentUrl = window.location.href;
         const baseUrlLength = currentUrl.indexOf(CODE_DIRECTORY) + CODE_DIRECTORY.length;

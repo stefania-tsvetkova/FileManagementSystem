@@ -1,4 +1,4 @@
-export class HashService {
+export class HashHelper {
     async getSHA256Hash(input) {
         const textAsBuffer = new TextEncoder().encode(input);
         const hashBuffer = await window.crypto.subtle.digest("SHA-256", textAsBuffer);
