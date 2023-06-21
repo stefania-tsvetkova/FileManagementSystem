@@ -1,6 +1,6 @@
 export class UserSessionService {
-    setCurrentUser(user) {
-        localStorage.setItem('currentUserId', user.id);
+    setCurrentUserId(userId) {
+        localStorage.setItem('currentUserId', userId);
     }
 
     getCurrentUserId() {

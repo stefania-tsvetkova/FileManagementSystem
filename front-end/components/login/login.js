@@ -31,14 +31,14 @@ async function login() {
     }
     
     const userData = await getUserData(formData);
-    const user = await userService.login(userData);
+    const userId = await userService.login(userData);
     
-    if (user === null) {
+    if (userId === '') {
         formHelper.displayError('login-button', 'Username or password is incorrect');
         return;
     }
 
-    userSessionService.setCurrentUser(user);
+    userSessionService.setCurrentUserId(userId);
 
     const url = urlHelper.constructUrl('home');
     window.location.replace(url);

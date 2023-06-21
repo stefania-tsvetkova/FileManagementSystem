@@ -41,7 +41,7 @@ async function register() {
     }
 
     const user = await userService.login(userData);
-    userSessionService.setCurrentUser(user);
+    userSessionService.setCurrentUserId(user);
 
     const url = urlHelper.constructUrl('home');
     window.location.replace(url);

@@ -35,7 +35,7 @@ export class UserService {
         });
 
         return requestService.get('../../../back-end/login.php', data)
-            .then(response => response === '' ? null : JSON.parse(response))
+            .then(response => response === '' ? null : JSON.parse(response).id)
             .catch(error => notificationService.error(error));
     }
 }
