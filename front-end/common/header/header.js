@@ -1,8 +1,10 @@
 import { UrlHelper} from '../../helpers/url.helper.js'
+import { UserSessionService} from '../../services/user-session.service.js'
 
 window.addHeader = addHeader;
 
 const urlHelper = new UrlHelper();
+const userSessionService = new UserSessionService();
 
 async function addHeader() {
     await fetch('../../common/header/header.html')
@@ -15,9 +17,8 @@ async function addHeader() {
     const filesUrl = urlHelper.constructUrl('files');
     document.getElementById("files-button").setAttribute("href", filesUrl);
     
-    const logoutUrl = urlHelper.constructUrl('logout');
-    document.getElementById("logout-button").setAttribute("href", logoutUrl);
+    document.getElementById("logout-button").addEventListener("click", function() {
+        userSessionService.removeCurrentUser();
+        window.location.replace('../../index.html');
+    });
 }
-
-document.body.addEventListener("load", function() {
-});
