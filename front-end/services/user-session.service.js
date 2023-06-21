@@ -1,19 +1,17 @@
-import { CURRENT_USER } from '../constants/user.constants.js';
-
 export class UserSessionService {
     setCurrentUser(user) {
-        localStorage.setItem(CURRENT_USER, user);
+        localStorage.setItem('currentUserId', user.id);
     }
 
-    getCurrentUser() {
-        return localStorage.getItem(CURRENT_USER);
+    getCurrentUserId() {
+        return localStorage.getItem('currentUserId');
     }
 
     isUserLoggedIn() {
-        return this.getCurrentUser() !== null;
+        return this.getCurrentUserId() !== null;
     }
 
     removeCurrentUser() {
-        localStorage.removeItem(CURRENT_USER);
+        localStorage.removeItem('currentUserId');
     }
 }

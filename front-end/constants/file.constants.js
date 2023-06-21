@@ -1,0 +1,1 @@
+export const VALID_FILE_EXTENSIONS = ['pdf', 'doc', 'xls', 'xlsx', 'docx', 'jpg', 'jpeg', 'png', 'zip', 'rar'];

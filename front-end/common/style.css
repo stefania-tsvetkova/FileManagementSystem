@@ -1,0 +1,63 @@
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+a {
+    color: #4c75af;
+}
+
+a:hover, a:visited {
+    color: #243751;
+}
+
+.center-content {
+    margin: auto;
+    text-align: center;
+}
+
+button {
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4c75af;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #243751;
+}
+
+body *{
+    margin: 8px 20px 8px 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #243751;
+    padding: 5px 30px;
+    margin: -8px -20px 20px -20px;
+}
+
+.header a {
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.header a:not(:last-of-type) {
+    margin-right: 20px;
+}
+
+.header a:hover {
+    color: #abc3e2;
+    cursor: pointer;
+}
