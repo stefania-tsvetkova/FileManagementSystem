@@ -1,8 +1,8 @@
-import { RequestService } from "../../services/request.service.js";
-import { VALID_FILE_EXTENSIONS } from '../../constants/file.constants.js';
-import { StatusIds } from '../../constants/status-ids.constants.js';
-import { NotificationService } from "../../services/notification.service.js";
-import { UserSessionService } from "../../services/user-session.service.js";
+import { RequestService } from "../../../services/request.service.js";
+import { VALID_FILE_EXTENSIONS } from '../../../constants/file.constants.js';
+import { StatusIds } from '../../../constants/status-ids.constants.js';
+import { NotificationService } from "../../../services/notification.service.js";
+import { UserSessionService } from "../../../services/user-session.service.js";
 
 window.bodyLoaded = bodyLoaded;
 window.chooseFilesButtonClicked = chooseFilesButtonClicked;
@@ -47,7 +47,7 @@ async function uploadFile() {
     data.append("userId", userSessionService.getCurrentUserId());
     data.append("statusId", StatusIds.Uploaded);
 
-    await requestService.post('../../../back-end/uploadFile.php', data)
+    await requestService.post('../../../../back-end/uploadFile.php', data)
         .then(response => {
             if (response !== '') {
                 notificationService.success(`File uploaded - the No. Ref. is ${response}`);
@@ -65,7 +65,7 @@ async function updateFilesTable() {
         userId: userSessionService.getCurrentUserId()
     });
 
-    await requestService.get('../../../back-end/getFiles.php', data)
+    await requestService.get('../../../../back-end/getFiles.php', data)
         .then(response => {
             const files = JSON.parse(response);
 

@@ -1,10 +1,10 @@
-import { UserService } from '../../services/user.service.js';
-import { HashHelper } from '../../helpers/hash.helper.js';
-import { UrlHelper} from '../../helpers/url.helper.js'
-import { DataValidationHelper} from '../../helpers/data-validation.helper.js'
-import { FormHelper} from '../../helpers/form.helper.js'
-import { NotificationService } from "../../services/notification.service.js";
-import { UserSessionService } from "../../services/user-session.service.js";
+import { UserService } from '../../../services/user.service.js';
+import { HashHelper } from '../../../helpers/hash.helper.js';
+import { UrlHelper} from '../../../helpers/url.helper.js'
+import { DataValidationHelper} from '../../../helpers/data-validation.helper.js'
+import { FormHelper} from '../../../helpers/form.helper.js'
+import { NotificationService } from "../../../services/notification.service.js";
+import { UserTypes } from '../../../constants/user-types.constants.js';
 
 window.register = register;
 window.bodyLoaded = bodyLoaded;
@@ -15,11 +15,15 @@ const urlHelper = new UrlHelper();
 const dataValidationHelper = new DataValidationHelper();
 const formHelper = new FormHelper();
 const notificationService = new NotificationService();
-const userSessionService = new UserSessionService();
 
 function bodyLoaded() {
-    const url = urlHelper.constructUrl('login');
-    document.getElementById("login-button").setAttribute("href", url);
+    const loginUrl = urlHelper.constructUrl('login');
+    const loginButtonElement = document.getElementById("login-button");
+    loginButtonElement.setAttribute("href", loginUrl);
+
+    const employeeLoginUrl = urlHelper.constructUrl('login', UserTypes.Employee);
+    const employeeLoginButtonElement = document.getElementById("employee-login-button");
+    employeeLoginButtonElement.setAttribute("href", employeeLoginUrl);
 }
 
 async function register() {
@@ -40,11 +44,10 @@ async function register() {
         return;
     }
 
-    const user = await userService.login(userData);
-    userSessionService.setCurrentUserId(user);
-
-    const url = urlHelper.constructUrl('home');
-    window.location.replace(url);
+    const isLoggedIn = await userService.login(userData);
+    if (!isLoggedIn) {
+        notificationService.error("User was registered but can't be logged in. Please try again later");
+    }
 };
 
 async function getUserData(formData) {

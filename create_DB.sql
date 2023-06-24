@@ -27,3 +27,25 @@ CREATE TABLE files(
     CONSTRAINT fk_files_users FOREIGN KEY(user_id) REFERENCES users(id),
     CONSTRAINT fk_files_statuses FOREIGN KEY(status_id) REFERENCES statuses(id)
 );
+
+CREATE TABLE departments(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO departments(name)
+VALUES	('Website administration'),
+		('Administration'),
+        ('Students'),
+        ('Employees');
+
+CREATE TABLE employees(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    familyName VARCHAR(50) NOT NULL,
+    passwordHash VARCHAR(64) NOT NULL,
+    isAdmin BIT NOT NULL,
+    department_id INT NOT NULL,
+    CONSTRAINT fk_employees_departments FOREIGN KEY(department_id) REFERENCES departments(id)
+);

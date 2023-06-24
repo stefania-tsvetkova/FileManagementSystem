@@ -1,13 +1,13 @@
 import { UrlHelper} from '../../helpers/url.helper.js'
-import { UserSessionService} from '../../services/user-session.service.js'
+import { UserService} from '../../services/user.service.js'
 
 window.addHeader = addHeader;
 
 const urlHelper = new UrlHelper();
-const userSessionService = new UserSessionService();
+const userService = new UserService();
 
 async function addHeader() {
-    await fetch('../../common/header/header.html')
+    await fetch('../../../common/header/header.html')
         .then(response => response.text())
         .then(headerHtml => document.body.insertAdjacentHTML("afterbegin", headerHtml));
 
@@ -15,7 +15,6 @@ async function addHeader() {
     document.getElementById("files-button").setAttribute("href", filesUrl);
     
     document.getElementById("logout-button").addEventListener("click", function() {
-        userSessionService.removeCurrentUser();
-        window.location.replace('../../index.html');
+        userService.logout()
     });
 }

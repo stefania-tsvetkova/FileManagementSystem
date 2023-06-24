@@ -9,7 +9,7 @@ if (!userSessionService.isUserLoggedIn()) {
     url = urlHelper.constructUrl('register');
 }
 else {
-    url = urlHelper.constructUrl('home');
+    url = urlHelper.constructUrl('files');
 }
 
 window.location.replace(url);

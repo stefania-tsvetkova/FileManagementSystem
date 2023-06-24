@@ -1,0 +1,41 @@
+<h1 id="title" class="title">File management system</h1>
+
+<div class="centered-container">
+    <form id="registration-form" class="centered-form" onsubmit="event.preventDefault(); login();">
+        <div>
+            <label for="email">Email:</label>
+            <input type="text" id="email">
+            <span id="email-error" class="error-message"></span>
+        </div>
+
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password">
+            <span id="password-error" class="error-message"></span>
+        </div>
+
+        <div class="center-content">
+            <div class="grid">
+                <button type="submit" id="login-button">
+                    Login
+                </button>
+                <span id="login-button-error" class="error-message"></span>
+            </div>
+            
+            <div id="register" class="hidden">
+                <span>Don't have an account?</span>
+                <a id="register-button">Register</a>
+            </div>
+            
+            <div id="user-login" class="hidden">
+                <span>You are not an employee?</span>
+                <a id="user-login-button">User login</a>
+            </div>
+            
+            <div id="employee-login" class="hidden">
+                <span>Are you an employee?</span>
+                <a id="employee-login-button">Employee login</a>
+            </div>
+        </div>
+    </form>
+</div>

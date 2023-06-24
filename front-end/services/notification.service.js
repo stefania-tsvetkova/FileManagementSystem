@@ -13,7 +13,7 @@ export class NotificationService {
 async function addNotification(message) {
     document.getElementById('notification')?.remove();
 
-    await fetch('../../common/notification/notification.html')
+    await fetch('../../../common/notification/notification.html')
         .then(response => response.text())
         .then(notificationHtml => document.body.insertAdjacentHTML("afterbegin", notificationHtml));
 
