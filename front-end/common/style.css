@@ -1,9 +1,15 @@
+.error-message {
+    color: #990000;
+}
+
 .error {
-    color: red;
+    background-color: #990000;
+    color: #fff;
 }
 
 .success {
-    color: green;
+    background-color: #336900;
+    color: #fff;
 }
 
 a {
@@ -89,4 +95,13 @@ table th {
     text-align: left;
     background-color: #243751;
     color: white;
+}
+
+.notification {
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    max-width: 200px;
+    z-index: 100;
+    padding: 10px;
 }
