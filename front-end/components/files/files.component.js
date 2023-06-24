@@ -49,8 +49,8 @@ async function uploadFile() {
 
     await requestService.post('../../../back-end/uploadFile.php', data)
         .then(response => {
-            if (response === '1') {
-                notificationService.success('File uploaded');
+            if (response !== '') {
+                notificationService.success(`File uploaded - the No. Ref. is ${response}`);
                 updateFilesTable();
                 return;
             }

@@ -34,9 +34,8 @@ $uploadDirectory = '../uploads/';
 $file_extension = strtolower(pathinfo($_POST["fileName"], PATHINFO_EXTENSION));
 $targetLocation = $uploadDirectory . $fileId . '.' . $file_extension;
 
-
 $fileTempLocation = $_FILES['file']['tmp_name'];
 $isSuccessful = move_uploaded_file($fileTempLocation, $targetLocation);
 
-print_r((int)$isSuccessful)
+print_r($isSuccessful ? $fileId : null)
 ?>
