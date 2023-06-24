@@ -20,7 +20,6 @@ a:hover, a:visited {
 }
 
 button {
-    display: block;
     padding: 10px;
     border-radius: 5px;
     border: none;
@@ -35,16 +34,15 @@ button:hover {
     background-color: #243751;
 }
 
-body *{
-    margin: 8px 20px 8px 20px;
-}
-
 .header {
     display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     justify-content: space-between;
     background-color: #243751;
-    padding: 5px 30px;
-    margin: -8px -20px 20px -20px;
+    padding: 10px 30px;
 }
 
 .header a {
@@ -60,4 +58,35 @@ body *{
 .header a:hover {
     color: #abc3e2;
     cursor: pointer;
+}
+
+.page-content {
+    padding: 55px 12px;
+}
+
+table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td, table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+table tr:nth-child(even){
+    background-color: #f2f2f2;}
+
+
+table tr:hover {
+    background-color: #ddd;
+}
+
+table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #243751;
+    color: white;
 }

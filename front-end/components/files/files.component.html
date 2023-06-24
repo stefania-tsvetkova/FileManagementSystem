@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>File management system</title>
+
+    <meta charset="UTF-8">
+
+    <link href="../../common/style.css" rel="stylesheet">
+    <link href="./files.component.css" rel="stylesheet">
+
+    <script type="module" src="../../common/header/header.js" async></script>
+    <script type="module" src="files.component.js" async></script>
+</head>
+
+<body onload="addHeader(); bodyLoaded()">
+    <div class="page-content">
+        <div class="upload-file">
+            <input 
+                type="file" 
+                name="file-input" 
+                id="file-input" 
+                class="file-input" 
+                onchange="selectedFileChanged()" />
+
+            <button onclick="chooseFilesButtonClicked()">
+                Choose file
+            </button>
+
+            <div id="file-name"></div>
+            
+            <button 
+                type="button" 
+                id="upload-file-button"
+                class="hidden"
+                onclick="uploadFile();">
+                Upload
+            </button>
+        </div>
+
+        <h1 class="heading">Uploaded files</h1>
+
+        <table id="files-table">
+            <tr>
+                <th>Ref. No.</th>
+                <th>File name</th>
+                <th>Status</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

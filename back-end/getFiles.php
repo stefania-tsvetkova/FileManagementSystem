@@ -6,7 +6,9 @@ $db = new Db();
 $connection = $db->getConnection();
 
 $statement = $connection->prepare("
-    SELECT id, name FROM files
+    SELECT f.id, f.name, s.name AS 'status' FROM files AS f
+    JOIN statuses AS s
+    ON s.id = f.status_id
     WHERE user_id = :user_id
 ");
 

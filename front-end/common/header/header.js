@@ -11,9 +11,6 @@ async function addHeader() {
         .then(response => response.text())
         .then(headerHtml => document.body.insertAdjacentHTML("afterbegin", headerHtml));
 
-    const uploadUrl = urlHelper.constructUrl('upload-file');
-    document.getElementById("upload-button").setAttribute("href", uploadUrl);
-    
     const filesUrl = urlHelper.constructUrl('files');
     document.getElementById("files-button").setAttribute("href", filesUrl);
     
