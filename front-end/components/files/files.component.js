@@ -70,6 +70,10 @@ async function updateFilesTable() {
             const files = JSON.parse(response);
 
             const table = document.getElementById('files-table');
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+
             for (let i = 0; i < files.length; i++) {
                 let row = table.insertRow(-1);
                 row.insertCell(-1).innerHTML = files[i]['id'];
