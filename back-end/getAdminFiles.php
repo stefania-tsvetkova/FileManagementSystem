@@ -14,20 +14,15 @@ $statement = $connection->prepare("
         u.email AS 'userEmail', 
         s.name AS 'status' 
     FROM files AS f
-    JOIN employees AS e
-    ON e.departmentId = f.departmentId
     JOIN users AS u
     ON u.id = f.userId
     JOIN statuses AS s
     ON s.id = f.statusId
     JOIN departments AS d
     ON d.id = f.departmentId
-    WHERE e.id = :employeeId
 ");
 
-$statement->execute([
-    "employeeId" => $_GET["employeeId"]
-]);
+$statement->execute();
 
 printQueryResult($statement);
 ?>

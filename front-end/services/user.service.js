@@ -77,13 +77,9 @@ export class UserService {
 function setLoggedInUser(userId, isAdmin) {
     userSessionService.setCurrentUser(userId, isAdmin);
 
-    let url;
-    if (isAdmin) {
-        url = urlHelper.constructUrl('files', UserTypes.Employee);
-    }
-    else {
-        url = urlHelper.constructUrl('files', UserTypes.User);
-    }
+    const url = isAdmin ?
+        urlHelper.constructUrl('files', UserTypes.Employee) :
+        urlHelper.constructUrl('files', UserTypes.User);
     
     window.location.replace(url);
 

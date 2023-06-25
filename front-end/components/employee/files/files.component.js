@@ -18,7 +18,12 @@ async function updateFilesTable() {
         employeeId: userSessionService.getCurrentUserId()
     });
 
-    await requestService.get('../../../../back-end/getEmployeeFiles.php', data)
+    const getFilesScript = userSessionService.isCurrentUserAdmin() ? 
+        'getAdminFiles.php' : 
+        'getEmployeeFiles.php';
+    const getFilesUrl = `../../../../back-end/${getFilesScript}`;
+
+    await requestService.get(getFilesUrl, data)
         .then(response => {
             const files = JSON.parse(response);
 
@@ -31,6 +36,7 @@ async function updateFilesTable() {
                 let row = table.insertRow(-1);
                 row.insertCell(-1).innerHTML = files[i]['id'];
                 row.insertCell(-1).innerHTML = files[i]['name'];
+                row.insertCell(-1).innerHTML = files[i]['department'];
                 row.insertCell(-1).innerHTML = files[i]['userEmail'];
                 row.insertCell(-1).innerHTML = files[i]['status'];
                 row.insertCell(-1).innerHTML = '';

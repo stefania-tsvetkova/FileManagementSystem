@@ -5,12 +5,8 @@ import { UserTypes } from './constants/user-types.constants.js';
 const userSessionService = new UserSessionService();
 const urlHelper = new UrlHelper();
     
-let url;
-if (!userSessionService.isUserLoggedIn()) {
-    url = urlHelper.constructUrl('register', UserTypes.User);
-}
-else {
-    url = urlHelper.constructUrl('files', UserTypes.User);
-}
+const url = userSessionService.isUserLoggedIn() ?
+urlHelper.constructUrl('files', UserTypes.User) : 
+urlHelper.constructUrl('register', UserTypes.User);
 
 window.location.replace(url);
