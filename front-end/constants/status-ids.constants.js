@@ -1,4 +1,5 @@
 export const StatusIds = {
     Uploaded: 1,
-    Reviewed: 2
+    Approved: 2,
+    Rejected: 3
 };

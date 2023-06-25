@@ -1,0 +1,15 @@
+.approve-button {
+    margin-right: 10px;
+}
+
+.approve-button {
+    background-color: #336900;
+}
+
+.reject-button {
+    background-color: #990000;
+}
+
+.files-table .actions-column {
+    width: 170px !important;
+}

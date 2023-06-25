@@ -54,12 +54,13 @@ async function uploadFile() {
         return;
     }
 
-    let data = new FormData();
-    data.append("file", file);
-    data.append("fileName", file.name);
-    data.append("userId", userSessionService.getCurrentUserId());
-    data.append("departmentId", departmentId);
-    data.append("statusId", StatusIds.Uploaded);
+    let data = new URLSearchParams({
+        file: file,
+        fileName: file.name,
+        userId: userSessionService.getCurrentUserId(),
+        departmentId: departmentId,
+        statusId: StatusIds.Uploaded
+    });
 
     await requestService.post('../../../../back-end/uploadFile.php', data)
         .then(response => {

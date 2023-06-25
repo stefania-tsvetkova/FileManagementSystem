@@ -17,4 +17,14 @@ export class RequestService {
             })
             .then(response => response.text());
     }
+    
+    put(url, data) {
+        return fetch(
+            url, 
+            {
+                method: 'PUT',
+                body: data
+            })
+            .then(response => response.text());
+    }
 }

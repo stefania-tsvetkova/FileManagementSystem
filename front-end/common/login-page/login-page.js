@@ -54,14 +54,14 @@ async function bodyLoaded() {
 async function login() {
     formHelper.clearFormErrors();
     
-    const formData = getFormData();
+    const data = getLoginData();
 
-    const isFormValid = await validateForm(formData);
+    const isFormValid = await validateForm(data);
     if (!isFormValid) {
         return;
     }
     
-    const userData = await getUserData(formData);
+    const userData = await getUserData(data);
 
     let isLoggedIn;
     if (userType == UserTypes.User.toLowerCase()) {
@@ -76,10 +76,10 @@ async function login() {
     }
 };
 
-async function getUserData(formData) {
+async function getUserData(data) {
     return {
-        email: formData.email.value,
-        passwordHash: await hashHelper.getSHA256Hash(formData.password.value)
+        email: data.email.value,
+        passwordHash: await hashHelper.getSHA256Hash(data.password.value)
     };
 }
 
@@ -90,7 +90,7 @@ function getUserType() {
     userType = urlParts[userTypeIndex];
 }
 
-function getFormData() {
+function getLoginData() {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
 
@@ -100,19 +100,19 @@ function getFormData() {
     };
 }
 
-async function validateForm(formData) {
+async function validateForm(data) {
     let isFormValid = true;
 
     isFormValid &= 
     formHelper.isInputValueValid(
-            formData.email, 
+            data.email, 
             dataValidationHelper.notNullOrEmpty, 
             'Email is required'
         );
 
     isFormValid &= 
     formHelper.isInputValueValid(
-            formData.password, 
+            data.password, 
             dataValidationHelper.notNullOrEmpty, 
             'Password is required'
         );

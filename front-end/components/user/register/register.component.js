@@ -29,14 +29,14 @@ function bodyLoaded() {
 async function register() {
     formHelper.clearFormErrors();
     
-    const formData = getFormData();
+    const data = getRegisterData();
 
-    const isFormValid = await validateForm(formData);
+    const isFormValid = await validateForm(data);
     if (!isFormValid) {
         return;
     }
     
-    const userData = await getUserData(formData);
+    const userData = await getUserData(data);
     const isRegistered = await userService.register(userData);
     
     if (!isRegistered) {
@@ -50,16 +50,16 @@ async function register() {
     }
 };
 
-async function getUserData(formData) {
+async function getUserData(data) {
     return {
-        email: formData.email.value,
-        name: formData.name.value,
-        familyName: formData.familyName.value,
-        passwordHash: await hashHelper.getSHA256Hash(formData.password.value)
+        email: data.email.value,
+        name: data.name.value,
+        familyName: data.familyName.value,
+        passwordHash: await hashHelper.getSHA256Hash(data.password.value)
     };
 }
 
-function getFormData() {
+function getRegisterData() {
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('name');
     const familyNameInput = document.getElementById('family-name');
@@ -73,63 +73,63 @@ function getFormData() {
     };
 }
 
-async function validateForm(formData) {
+async function validateForm(data) {
     let isFormValid = true;
 
     isFormValid &= 
         formHelper.isInputValueValid(
-            formData.email, 
+            data.email, 
             dataValidationHelper.notNullOrEmpty, 
             'Email is required'
         )
         &&
         formHelper.isInputValueValid(
-            formData.email, 
+            data.email, 
             dataValidationHelper.isEmailValid, 
             'Invalid email'
         )
         &&
         (await formHelper.isInputValueValidAsync(
-            formData.email, 
+            data.email, 
             isEmailNotUsed, 
             'User with this email already exists'
         ));
 
     isFormValid &= 
         formHelper.isInputValueValid(
-            formData.name, 
+            data.name, 
             dataValidationHelper.notNullOrEmpty, 
             'Name is required'
         )
         &&
         formHelper.isInputValueValid(
-            formData.name, 
+            data.name, 
             dataValidationHelper.isNameValid, 
             'Name must be maximum 50 characters'
         );
 
     isFormValid &= 
         formHelper.isInputValueValid(
-            formData.familyName, 
+            data.familyName, 
             dataValidationHelper.notNullOrEmpty, 
             'Family name is required'
         )
         &&
         formHelper.isInputValueValid(
-            formData.familyName, 
+            data.familyName, 
             dataValidationHelper.isNameValid, 
             'Family name must be maximum 50 characters'
         );
 
     isFormValid &= 
         formHelper.isInputValueValid(
-            formData.password, 
+            data.password, 
             dataValidationHelper.notNullOrEmpty, 
             'Password is required'
         )
         &&
         formHelper.isInputValueValid(
-            formData.password, 
+            data.password, 
             dataValidationHelper.isPasswordValid, 
             'Password must be between 5 and 50 characters, and can contain uppercase letters, lowercase letters, and numbers'
         );
