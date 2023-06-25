@@ -1,7 +1,8 @@
-import { RequestService } from "../../../services/request.service.js";
-import { NotificationService } from "../../../services/notification.service.js";
-import { UserSessionService } from "../../../services/user-session.service.js";
-import { StatusIds } from "../../../constants/status-ids.constants.js";
+import { RequestService } from '../../../services/request.service.js';
+import { NotificationService } from '../../../services/notification.service.js';
+import { UserSessionService } from '../../../services/user-session.service.js';
+import { StatusIds } from '../../../constants/status-ids.constants.js';
+import { SERVER_CODE_DIRECTORY } from '../../../constants/url.constants.js';
 
 window.bodyLoaded = bodyLoaded;
 window.setFileStatus = setFileStatus;
@@ -21,7 +22,7 @@ async function setFileStatus(fileId, statusId) {
         statusId: statusId
     });
     
-    await requestService.put('../../../../back-end/updateFileStatus.php', data)
+    await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/updateFileStatus.php`, data)
         .then(isSuccessful => {
             if (!isSuccessful) {
                 notificationService.error('Error updating file status');
@@ -39,7 +40,7 @@ async function updateFilesTable() {
         employeeId: userSessionService.getCurrentUserId()
     });
     
-    await requestService.get('../../../../back-end/getEmployeeFiles.php', data)
+    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getEmployeeFiles.php`, data)
         .then(response => {
             const files = JSON.parse(response);
 
@@ -64,15 +65,15 @@ async function updateFilesTable() {
 function getActionsHtml(fileId) {
     const approveButtonHtml = `
         <button 
-            class="approve-button"
-            onclick="setFileStatus(${fileId}, ${StatusIds.Approved})">
+            class='approve-button'
+            onclick='setFileStatus(${fileId}, ${StatusIds.Approved})'>
             Approve
         </button>`;
 
     const rejectButtonHtml = `
         <button 
-            class="reject-button"
-            onclick="setFileStatus(${fileId}, ${StatusIds.Rejected})">
+            class='reject-button'
+            onclick='setFileStatus(${fileId}, ${StatusIds.Rejected})'>
             Reject
         </button>`;
 

@@ -10,12 +10,12 @@ const userService = new UserService();
 async function addHeader() {
     await fetch('../../../common/header/header.html')
         .then(response => response.text())
-        .then(headerHtml => document.body.insertAdjacentHTML("afterbegin", headerHtml));
+        .then(headerHtml => document.body.insertAdjacentHTML('afterbegin', headerHtml));
 
     const filesUrl = urlHelper.constructUrl('files', UserTypes.User);
-    document.getElementById("files-button").setAttribute("href", filesUrl);
+    document.getElementById('files-button').setAttribute('href', filesUrl);
     
-    document.getElementById("logout-button").addEventListener("click", function() {
+    document.getElementById('logout-button').addEventListener('click', function() {
         userService.logout()
     });
 }

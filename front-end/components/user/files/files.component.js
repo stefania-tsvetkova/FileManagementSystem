@@ -1,8 +1,9 @@
-import { RequestService } from "../../../services/request.service.js";
+import { RequestService } from '../../../services/request.service.js';
 import { VALID_FILE_EXTENSIONS } from '../../../constants/file.constants.js';
 import { StatusIds } from '../../../constants/status-ids.constants.js';
-import { NotificationService } from "../../../services/notification.service.js";
-import { UserSessionService } from "../../../services/user-session.service.js";
+import { NotificationService } from '../../../services/notification.service.js';
+import { UserSessionService } from '../../../services/user-session.service.js';
+import { SERVER_CODE_DIRECTORY } from '../../../constants/url.constants.js';
 
 window.bodyLoaded = bodyLoaded;
 window.selectedDepartmentChanged = selectedDepartmentChanged;
@@ -54,15 +55,14 @@ async function uploadFile() {
         return;
     }
 
-    let data = new URLSearchParams({
-        file: file,
-        fileName: file.name,
-        userId: userSessionService.getCurrentUserId(),
-        departmentId: departmentId,
-        statusId: StatusIds.Uploaded
-    });
+    let data = new FormData();
+    data.append("file", file);
+    data.append("fileName", file.name);
+    data.append("userId", userSessionService.getCurrentUserId());
+    data.append("departmentId", departmentId);
+    data.append("statusId", StatusIds.Uploaded);
 
-    await requestService.post('../../../../back-end/uploadFile.php', data)
+    await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/uploadFile.php`, data)
         .then(response => {
             if (response !== '') {
                 notificationService.success(`File uploaded - the No. Ref. is ${response}`);
@@ -81,15 +81,15 @@ function selectedDepartmentChanged() {
 }
 
 async function setDepartments() {
-    await requestService.get('../../../../back-end/getDepartments.php')
+    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getDepartments.php`)
         .then(response => {
             const departments = JSON.parse(response)
                 .sort((a, b) => a.name.localeCompare(b.name));
 
             const departmentsDropdownElement = document.getElementById('departments-dropdown');
             departments.forEach(department => {
-                const optionHtml = `<option value="${department.id}">${department.name}</option>`;
-                departmentsDropdownElement.insertAdjacentHTML("beforeEnd", optionHtml);
+                const optionHtml = `<option value='${department.id}'>${department.name}</option>`;
+                departmentsDropdownElement.insertAdjacentHTML('beforeEnd', optionHtml);
             });
         })
         .catch(_ => notificationService.error('Error getting departments'));
@@ -100,7 +100,7 @@ async function updateFilesTable() {
         userId: userSessionService.getCurrentUserId()
     });
 
-    await requestService.get('../../../../back-end/getUserFiles.php', data)
+    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getUserFiles.php`, data)
         .then(response => {
             const files = JSON.parse(response);
 
@@ -121,9 +121,9 @@ async function updateFilesTable() {
 }
 
 function getSelectedFile() {
-    return document.getElementById("file-input").files[0];
+    return document.getElementById('file-input').files[0];
 }
 
 function getSelectedDepartmentId() {
-    return document.getElementById("departments-dropdown").value;
+    return document.getElementById('departments-dropdown').value;
 }

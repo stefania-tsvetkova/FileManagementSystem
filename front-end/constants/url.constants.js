@@ -1,4 +1,5 @@
-export const CODE_DIRECTORY = 'front-end';
+export const CLIENT_CODE_DIRECTORY = 'front-end';
+export const SERVER_CODE_DIRECTORY = 'back-end';
 
 export const COMPONENTS_DIRECTORY = 'components';
 

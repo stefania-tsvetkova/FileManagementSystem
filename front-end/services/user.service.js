@@ -1,8 +1,9 @@
-import { RequestService } from "./request.service.js";
-import { NotificationService } from "./notification.service.js";
-import { UserSessionService } from "./user-session.service.js";
-import { UrlHelper } from "../helpers/url.helper.js";
-import { UserTypes } from "../constants/user-types.constants.js";
+import { RequestService } from './request.service.js';
+import { NotificationService } from './notification.service.js';
+import { UserSessionService } from './user-session.service.js';
+import { UrlHelper } from '../helpers/url.helper.js';
+import { UserTypes } from '../constants/user-types.constants.js';
+import { SERVER_CODE_DIRECTORY } from '../constants/url.constants.js';
 
 const requestService = new RequestService();
 const notificationService = new NotificationService();
@@ -15,21 +16,20 @@ export class UserService {
             email: email
         });
 
-        return requestService.get('../../../../back-end/emailExists.php', data)
+        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/emailExists.php`, data)
             .then(response => response == '1')
             .catch(error => notificationService.error(error));
     }
 
     async register(user) {
-        let data = new URLSearchParams({
-            email: user.email,
-            name: user.name,
-            familyName: user.familyName,
-            passwordHash: user.passwordHash
-        });
+        let data = new FormData();
+        data.append("email", user.email);
+        data.append("name", user.name);
+        data.append("familyName", user.familyName);
+        data.append("passwordHash", user.passwordHash);
 
-        const response = await requestService.post('../../../../back-end/register.php', data)
-            .catch(_ => notificationService.error("Registration unsuccessful due to a server error"));
+        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/register.php`, data)
+            .catch(_ => notificationService.error('Registration unsuccessful due to a server error'));
 
         return response === '1';
     }
@@ -40,8 +40,8 @@ export class UserService {
             passwordHash: user.passwordHash
         });
 
-        const response = await requestService.get('../../../../back-end/login.php', data)
-            .catch(_ => notificationService.error("Login unsuccessful due to a server error"));
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/login.php`, data)
+            .catch(_ => notificationService.error('Login unsuccessful due to a server error'));
 
         if (response === 'false') {
             return false;
@@ -57,8 +57,8 @@ export class UserService {
             passwordHash: user.passwordHash
         });
 
-        const response = await requestService.get('../../../../back-end/employeeLogin.php', data)
-            .catch(_ => notificationService.error("Login unsuccessful due to a server error"));
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employeeLogin.php`, data)
+            .catch(_ => notificationService.error('Login unsuccessful due to a server error'));
     
         if (response === 'false') {
             return false;

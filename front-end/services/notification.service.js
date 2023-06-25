@@ -15,7 +15,7 @@ async function addNotification(message) {
 
     await fetch('../../../common/notification/notification.html')
         .then(response => response.text())
-        .then(notificationHtml => document.body.insertAdjacentHTML("afterbegin", notificationHtml));
+        .then(notificationHtml => document.body.insertAdjacentHTML('afterbegin', notificationHtml));
 
     const notificationElement = document.getElementById('notification');
     notificationElement.innerHTML = message;
