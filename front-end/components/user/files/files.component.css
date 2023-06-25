@@ -5,6 +5,7 @@
 .upload-file {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .upload-file *{
