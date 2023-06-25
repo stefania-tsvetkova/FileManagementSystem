@@ -11,14 +11,15 @@ $db = new Db();
 $connection = $db->getConnection();
 
 $statement = $connection->prepare("
-    INSERT INTO files(name, user_id, status_id)
-    VALUES (:name, :user_id, :status_id)
+    INSERT INTO files(name, userId, departmentId, statusId)
+    VALUES (:name, :userId, :departmentId, :statusId)
 ");
 
 $isSuccessful = $statement->execute([
     "name" => $_POST["fileName"],
-    "user_id" => $_POST["userId"],
-    "status_id" => $_POST["statusId"]
+    "userId" => $_POST["userId"],
+    "departmentId" => $_POST["departmentId"],
+    "statusId" => $_POST["statusId"]
 ]);
 
 if (!$isSuccessful) {

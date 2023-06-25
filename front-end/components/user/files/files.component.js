@@ -5,6 +5,7 @@ import { NotificationService } from "../../../services/notification.service.js";
 import { UserSessionService } from "../../../services/user-session.service.js";
 
 window.bodyLoaded = bodyLoaded;
+window.selectedDepartmentChanged = selectedDepartmentChanged;
 window.chooseFilesButtonClicked = chooseFilesButtonClicked;
 window.selectedFileChanged = selectedFileChanged;
 window.uploadFile = uploadFile;
@@ -13,8 +14,10 @@ const requestService = new RequestService();
 const notificationService = new NotificationService();
 const userSessionService = new UserSessionService();
 
-async function bodyLoaded() {
-    await updateFilesTable();
+function bodyLoaded() {
+    // we don't await these async function so they can be executed parallelly
+    setDepartments();
+    updateFilesTable();
 }
 
 function chooseFilesButtonClicked() {
@@ -28,11 +31,21 @@ function selectedFileChanged() {
     const fileNameElement = document.getElementById('file-name');
     fileNameElement.innerHTML = fileName;
 
+    const departmentsDropdownElement = document.getElementById('departments-dropdown');
+    departmentsDropdownElement.classList.remove('hidden');
+
     const uploadFileButtonElement = document.getElementById('upload-file-button');
     uploadFileButtonElement.classList.remove('hidden');
 }
 
 async function uploadFile() {
+    const departmentId = getSelectedDepartmentId();
+    if (departmentId === '') {
+        const uploadErrorElement = document.getElementById(`upload-error`);
+        uploadErrorElement.textContent = 'Department is requered';
+        return;
+    }
+
     const file = getSelectedFile();
 
     const fileExtension = file.name.split('.').pop();
@@ -45,6 +58,7 @@ async function uploadFile() {
     data.append("file", file);
     data.append("fileName", file.name);
     data.append("userId", userSessionService.getCurrentUserId());
+    data.append("departmentId", departmentId);
     data.append("statusId", StatusIds.Uploaded);
 
     await requestService.post('../../../../back-end/uploadFile.php', data)
@@ -58,6 +72,26 @@ async function uploadFile() {
             notificationService.error('File upload failed');
         })
         .catch(_ => notificationService.error('File upoad failed'));
+}
+
+function selectedDepartmentChanged() {
+    const uploadErrorElement = document.getElementById(`upload-error`);
+    uploadErrorElement.textContent = '';
+}
+
+async function setDepartments() {
+    await requestService.get('../../../../back-end/getDepartments.php')
+        .then(response => {
+            const departments = JSON.parse(response)
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            const departmentsDropdownElement = document.getElementById('departments-dropdown');
+            departments.forEach(department => {
+                const optionHtml = `<option value="${department.id}">${department.name}</option>`;
+                departmentsDropdownElement.insertAdjacentHTML("beforeEnd", optionHtml);
+            });
+        })
+        .catch(_ => notificationService.error('Error getting departments'));
 }
 
 async function updateFilesTable() {
@@ -78,6 +112,7 @@ async function updateFilesTable() {
                 let row = table.insertRow(-1);
                 row.insertCell(-1).innerHTML = files[i]['id'];
                 row.insertCell(-1).innerHTML = files[i]['name'];
+                row.insertCell(-1).innerHTML = files[i]['department'];
                 row.insertCell(-1).innerHTML = files[i]['status'];
             }
         })
@@ -85,5 +120,9 @@ async function updateFilesTable() {
 }
 
 function getSelectedFile() {
-    return document.getElementById("file-input").files[0];;
+    return document.getElementById("file-input").files[0];
+}
+
+function getSelectedDepartmentId() {
+    return document.getElementById("departments-dropdown").value;
 }

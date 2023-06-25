@@ -1,30 +1,23 @@
 <?php
 require_once 'Db.php';
+require_once 'helpers.php';
 
 $db = new Db();
 
 $connection = $db->getConnection();
 
 $statement = $connection->prepare("
-    SELECT f.id, f.name, s.name AS 'status' FROM files AS f
+    SELECT f.id, f.name, d.name AS 'department', s.name AS 'status' FROM files AS f
     JOIN statuses AS s
-    ON s.id = f.status_id
-    WHERE user_id = :user_id
+    ON s.id = f.statusId
+    JOIN departments AS d
+    ON d.id = f.departmentId
+    WHERE userId = :userId
 ");
 
 $statement->execute([
-    "user_id" => $_GET["userId"]
+    "userId" => $_GET["userId"]
 ]);
 
-print_r('[');
-
-$file = $statement->fetch(PDO::FETCH_ASSOC);
-print_r($file ? json_encode($file) : null);
-
-while ($file = $statement->fetch(PDO::FETCH_ASSOC)) {
-    print_r(',');
-    print_r($file ? json_encode($file) : null);
-}
-
-print_r(']');
+printQueryResult($statement);
 ?>

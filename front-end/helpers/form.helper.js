@@ -4,12 +4,6 @@ export class FormHelper {
         errors.forEach(error => {
             error.textContent = '';
         });
-    
-        const registerErrorElement = document.getElementById('error');
-        registerErrorElement?.remove();
-    
-        const registerSuccessElement = document.getElementById('success');
-        registerSuccessElement?.remove();
     }
     
     isInputValueValid(input, isValidFunction, errorMessage) {

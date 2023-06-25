@@ -59,19 +59,6 @@ async function getUserData(formData) {
     };
 }
 
-function clearFormErrors() {
-    let errors = document.querySelectorAll('[id*="-error"]');
-    errors.forEach(error => {
-        error.textContent = '';
-    });
-
-    const registerErrorElement = document.getElementById('error');
-    registerErrorElement?.remove();
-
-    const registerSuccessElement = document.getElementById('success');
-    registerSuccessElement?.remove();
-}
-
 function getFormData() {
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('name');

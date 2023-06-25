@@ -107,5 +107,13 @@ table th {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
+}
+
+.dropdown {
+    padding: 8px;
+    border-radius: 5px;
+    border: 2px solid #4c75af;
+    cursor: pointer;
+    font-size: 16px;
 }
