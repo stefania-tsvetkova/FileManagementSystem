@@ -1,15 +1,15 @@
 export class UserSessionService {
     setCurrentUser(userId, isAdmin) {
         localStorage.setItem('currentUserId', userId);
-        localStorage.setItem('currentUserIsAdmin', isAdmin);
+        localStorage.setItem('currentUserIsEmployee', isAdmin);
     }
 
     getCurrentUserId() {
         return localStorage.getItem('currentUserId');
     }
 
-    isCurrentUserAdmin() {
-        return localStorage.getItem('currentUserIsAdmin');
+    isCurrentUserEmployee() {
+        return localStorage.getItem('currentUserIsEmployee');
     }
 
     isUserLoggedIn() {
@@ -18,6 +18,6 @@ export class UserSessionService {
 
     removeCurrentUser() {
         localStorage.removeItem('currentUserId');
-        localStorage.removeItem('currentUserIsAdmin');
+        localStorage.removeItem('currentUserIsEmployee');
     }
 }

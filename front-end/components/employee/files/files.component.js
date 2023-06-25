@@ -17,13 +17,8 @@ async function updateFilesTable() {
     let data = new URLSearchParams({
         employeeId: userSessionService.getCurrentUserId()
     });
-
-    const getFilesScript = userSessionService.isCurrentUserAdmin() ? 
-        'getAdminFiles.php' : 
-        'getEmployeeFiles.php';
-    const getFilesUrl = `../../../../back-end/${getFilesScript}`;
-
-    await requestService.get(getFilesUrl, data)
+    
+    await requestService.get('../../../../back-end/getEmployeeFiles.php', data)
         .then(response => {
             const files = JSON.parse(response);
 

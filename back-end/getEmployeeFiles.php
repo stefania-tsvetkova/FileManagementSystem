@@ -15,7 +15,7 @@ $statement = $connection->prepare("
         s.name AS 'status' 
     FROM files AS f
     JOIN employees AS e
-    ON e.departmentId = f.departmentId
+    ON e.isAdmin OR e.departmentId = f.departmentId
     JOIN users AS u
     ON u.id = f.userId
     JOIN statuses AS s
