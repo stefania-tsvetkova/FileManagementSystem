@@ -1,3 +1,4 @@
+import { UserTypes } from '../../constants/user-types.constants.js';
 import { UrlHelper} from '../../helpers/url.helper.js'
 import { UserService} from '../../services/user.service.js'
 
@@ -11,7 +12,7 @@ async function addHeader() {
         .then(response => response.text())
         .then(headerHtml => document.body.insertAdjacentHTML("afterbegin", headerHtml));
 
-    const filesUrl = urlHelper.constructUrl('files');
+    const filesUrl = urlHelper.constructUrl('files', UserTypes.User);
     document.getElementById("files-button").setAttribute("href", filesUrl);
     
     document.getElementById("logout-button").addEventListener("click", function() {

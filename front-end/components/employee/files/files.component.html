@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>File management system</title>
+
+    <meta charset="UTF-8">
+
+    <link href="../../../common/style.css" rel="stylesheet">
+    <link href="./files.component.css" rel="stylesheet">
+
+    <script type="module" src="../../../common/header/header.js" async></script>
+    <script type="module" src="files.component.js" async></script>
+</head>
+
+<body onload="addHeader(); bodyLoaded()">
+    <div class="page-content">
+        <h1 class="heading">Uploaded files</h1>
+
+        <table id="files-table">
+            <tr>
+                <th>Ref. No.</th>
+                <th>File name</th>
+                <th>User email</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

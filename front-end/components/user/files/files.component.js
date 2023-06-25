@@ -99,7 +99,7 @@ async function updateFilesTable() {
         userId: userSessionService.getCurrentUserId()
     });
 
-    await requestService.get('../../../../back-end/getFiles.php', data)
+    await requestService.get('../../../../back-end/getUserFiles.php', data)
         .then(response => {
             const files = JSON.parse(response);
 

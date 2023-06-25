@@ -117,3 +117,7 @@ table th {
     cursor: pointer;
     font-size: 16px;
 }
+
+.heading {
+    margin: 0 0 20px 0;
+}

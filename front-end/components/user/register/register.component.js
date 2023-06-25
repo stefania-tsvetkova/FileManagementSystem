@@ -17,7 +17,7 @@ const formHelper = new FormHelper();
 const notificationService = new NotificationService();
 
 function bodyLoaded() {
-    const loginUrl = urlHelper.constructUrl('login');
+    const loginUrl = urlHelper.constructUrl('login', UserTypes.User);
     const loginButtonElement = document.getElementById("login-button");
     loginButtonElement.setAttribute("href", loginUrl);
 

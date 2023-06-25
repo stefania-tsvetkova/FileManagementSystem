@@ -2,6 +2,7 @@ import { RequestService } from "./request.service.js";
 import { NotificationService } from "./notification.service.js";
 import { UserSessionService } from "./user-session.service.js";
 import { UrlHelper } from "../helpers/url.helper.js";
+import { UserTypes } from "../constants/user-types.constants.js";
 
 const requestService = new RequestService();
 const notificationService = new NotificationService();
@@ -78,10 +79,10 @@ function setLoggedInUser(userId, isAdmin) {
 
     let url;
     if (isAdmin) {
-        url = ''; // ToDo
+        url = urlHelper.constructUrl('files', UserTypes.Employee);
     }
     else {
-        url = urlHelper.constructUrl('files');
+        url = urlHelper.constructUrl('files', UserTypes.User);
     }
     
     window.location.replace(url);
