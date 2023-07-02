@@ -5,8 +5,13 @@ import { NotificationService } from "../../../services/notification.service.js";
 import { EmployeeService } from '../../../services/employee.service.js';
 import { DepartmentService } from '../../../services/department.service.js';
 
-window.addEmployee = addEmployee;
 window.bodyLoaded = bodyLoaded;
+window.validateEmail = validateEmail;
+window.validateName = validateName;
+window.validateFamilyName = validateFamilyName;
+window.validatePassword = validatePassword;
+window.validateDepartment = validateDepartment;
+window.addEmployee = addEmployee;
 
 const employeeService = new EmployeeService();
 const hashHelper = new HashHelper();
@@ -34,14 +39,12 @@ async function setDepartments() {
 async function addEmployee() {
     formHelper.clearFormErrors();
     
-    const data = getFormData();
-
-    const isFormValid = await validateForm(data);
+    const isFormValid = await validateForm();
     if (!isFormValid) {
         return;
     }
     
-    const employeeData = await getEmployeeData(data);
+    const employeeData = await getEmployeeData();
     employeeService.addEmployee(employeeData)
         .then(isAdded => {
             isAdded ? 
@@ -50,106 +53,105 @@ async function addEmployee() {
         });
 };
 
-async function getEmployeeData(data) {
+async function getEmployeeData() {
     return {
-        email: data.email.value,
-        name: data.name.value,
-        familyName: data.familyName.value,
-        passwordHash: await hashHelper.getSHA256Hash(data.password.value),
-        departmentId: data.department.value,
-        isAdmin: data.isAdmin.checked
+        email: document.getElementById('email').value,
+        name: document.getElementById('name').value,
+        familyName: document.getElementById('family-name').value,
+        passwordHash: await hashHelper.getSHA256Hash(document.getElementById('password').value),
+        departmentId: document.getElementById('department').value,
+        isAdmin: document.getElementById('is-admin').checked
     };
 }
 
-function getFormData() {
+async function validateForm() {
+    const isEmailValid = await validateEmail();
+    const isNameValid = validateName();
+    const isFamilyNameValid = validateFamilyName();
+    const isPasswordValid = validatePassword();
+    const isDepartmentValid = validateDepartment();
+
+    return isEmailValid && isNameValid && isFamilyNameValid && isPasswordValid && isDepartmentValid;
+}
+
+async function validateEmail() {
     const emailInput = document.getElementById('email');
-    const nameInput = document.getElementById('name');
-    const familyNameInput = document.getElementById('family-name');
-    const passwordInput = document.getElementById('password');
-    const departmentInput = document.getElementById('department');
-    const isAdminInput = document.getElementById('is-admin');
 
-    return {
-        email: emailInput,
-        name: nameInput,
-        familyName: familyNameInput,
-        password: passwordInput,
-        department: departmentInput,
-        isAdmin: isAdminInput
-    };
+    return formHelper.isInputValueValid(
+        emailInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Email is required'
+    )
+    &&
+    formHelper.isInputValueValid(
+        emailInput, 
+        dataValidationHelper.isEmailValid, 
+        'Invalid email'
+    )
+    &&
+    (await formHelper.isInputValueValidAsync(
+        emailInput, 
+        isEmailNotUsed, 
+        'User with this email already exists'
+    ));
 }
 
-async function validateForm(data) {
-    let isFormValid = true;
+function validateName() {
+    const nameInput = document.getElementById('name');
 
-    isFormValid &= 
-        formHelper.isInputValueValid(
-            data.email, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Email is required'
-        )
-        &&
-        formHelper.isInputValueValid(
-            data.email, 
-            dataValidationHelper.isEmailValid, 
-            'Invalid email'
-        )
-        &&
-        (await formHelper.isInputValueValidAsync(
-            data.email, 
-            isEmailNotUsed, 
-            'Employee with this email already exists'
-        ));
+    return formHelper.isInputValueValid(
+        nameInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Name is required'
+    )
+    &&
+    formHelper.isInputValueValid(
+        nameInput, 
+        dataValidationHelper.isNameValid, 
+        'Name must be maximum 50 characters'
+    );
+}
 
-    isFormValid &= 
-        formHelper.isInputValueValid(
-            data.name, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Name is required'
-        )
-        &&
-        formHelper.isInputValueValid(
-            data.name, 
-            dataValidationHelper.isNameValid, 
-            'Name must be maximum 50 characters'
-        );
+function validateFamilyName() {
+    const familyNameInput = document.getElementById('family-name');
 
-    isFormValid &= 
-        formHelper.isInputValueValid(
-            data.familyName, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Family name is required'
-        )
-        &&
-        formHelper.isInputValueValid(
-            data.familyName, 
-            dataValidationHelper.isNameValid, 
-            'Family name must be maximum 50 characters'
-        );
+    return formHelper.isInputValueValid(
+        familyNameInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Family name is required'
+    )
+    &&
+    formHelper.isInputValueValid(
+        familyNameInput, 
+        dataValidationHelper.isNameValid, 
+        'Family name must be maximum 50 characters'
+    );
+}
 
-    isFormValid &= 
-        formHelper.isInputValueValid(
-            data.password, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Password is required'
-        )
-        &&
-        formHelper.isInputValueValid(
-            data.password, 
-            dataValidationHelper.isPasswordValid, 
-            'Password must be between 5 and 50 characters, and can contain uppercase letters, lowercase letters, and numbers'
-        );
+function validatePassword() {
+    const passwordInput = document.getElementById('password');
 
-    
+    return formHelper.isInputValueValid(
+        passwordInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Password is required'
+    )
+    &&
+    formHelper.isInputValueValid(
+        passwordInput, 
+        dataValidationHelper.isPasswordValid, 
+        'Password must be between 5 and 50 characters, and can contain uppercase letters, lowercase letters, and numbers'
+    );
+}
 
-    isFormValid &= 
-        formHelper.isInputValueValid(
-            data.department, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Department is required'
-        );
+function validateDepartment() {
+    const departmentInput = document.getElementById('department');
 
-    return isFormValid;
+    return formHelper.isInputValueValid(
+        departmentInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Department is required'
+    );
 }
 
 async function isEmailNotUsed(email) {

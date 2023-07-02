@@ -47,7 +47,11 @@ async function changePassword() {
 };
 
 async function validateForm() {
-    return (await validateOldPassword()) && validateNewPassword() && validateConfirmNewPassword();
+    const isOldPasswordValid = await validateOldPassword();
+    const isNewPasswordValid = validateNewPassword();
+    const isConfirmNewPasswordValid = validateConfirmNewPassword();
+
+    return isOldPasswordValid && isNewPasswordValid && isConfirmNewPasswordValid;
 }
 
 async function validateOldPassword() {

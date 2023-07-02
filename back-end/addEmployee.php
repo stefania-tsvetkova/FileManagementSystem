@@ -10,14 +10,14 @@
         VALUES (:email, :name, :familyName, :passwordHash, :departmentId, :isAdmin)
     ");
 
-    $isSuccessful = $statement->execute([
-        "email" => $_POST["email"],
-        "name" => $_POST["name"],
-        "familyName" => $_POST["familyName"],
-        "passwordHash" => $_POST["passwordHash"],
-        "departmentId" => $_POST["departmentId"],
-        "isAdmin" => $_POST["isAdmin"]
-    ]);
+    $statement->bindValue(':email', $_POST["email"]);
+    $statement->bindValue(':name', $_POST["name"]);
+    $statement->bindValue(':familyName', $_POST["familyName"]);
+    $statement->bindValue(':passwordHash', $_POST["passwordHash"]);
+    $statement->bindValue(':departmentId', $_POST["departmentId"], PDO::PARAM_INT);
+    $statement->bindValue(':isAdmin', $_POST["isAdmin"], PDO::PARAM_INT);
+
+    $isSuccessful = $statement->execute();
 
     print_r($isSuccessful)
 ?>

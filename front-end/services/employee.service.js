@@ -48,7 +48,7 @@ export class EmployeeService {
         data.append("familyName", employee.familyName);
         data.append("passwordHash", employee.passwordHash);
         data.append("departmentId", employee.departmentId);
-        data.append("isAdmin", employee.isAdmin);
+        data.append("isAdmin", employee.isAdmin ? 1 : 0);
 
         const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/addEmployee.php`, data)
             .catch(_ => notificationService.error('Adding employee unsuccessful due to a server error'));

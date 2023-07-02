@@ -21,25 +21,25 @@
             <form id="add-employee-form" class="centered-form" onsubmit="event.preventDefault(); addEmployee();">
                 <div>
                     <label for="email">Email:</label>
-                    <input type="text" id="email">
+                    <input type="text" id="email" onchange="validateEmail()">
                     <span id="email-error" class="error-message"></span>
                 </div>
 
                 <div>
                     <label for="name">First Name:</label>
-                    <input type="text" id="name">
+                    <input type="text" id="name" onchange="validateName()">
                     <span id="name-error" class="error-message"></span>
                 </div>
 
                 <div>
                     <label for="family-name">Last Name:</label>
-                    <input type="text" id="family-name">
+                    <input type="text" id="family-name" onchange="validateFamilyName()">
                     <span id="family-name-error" class="error-message"></span>
                 </div>
 
                 <div>
                     <label for="password">Password:</label>
-                    <input type="password" id="password">
+                    <input type="password" id="password" onchange="validatePassword()">
                     <span id="password-error" class="error-message"></span>
                 </div>
 
@@ -47,7 +47,8 @@
                     <label for="department">Department:</label>
                     <select 
                         id="department" 
-                        class="dropdown">
+                        class="dropdown"
+                        onchange="validateDepartment()">
                         <option disabled selected value="">Choose department</option>
                     </select>
                     <span id="department-error" class="error-message"></span>

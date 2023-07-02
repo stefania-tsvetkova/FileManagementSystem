@@ -8,6 +8,8 @@ import { COMPONENTS_DIRECTORY } from '../../constants/url.constants.js';
 import { UserTypes } from '../../constants/user-types.constants.js';
 
 window.bodyLoaded = bodyLoaded;
+window.validateEmail = validateEmail;
+window.validatePassword = validatePassword;
 window.login = login;
 
 const userService = new UserService();
@@ -56,27 +58,25 @@ async function bodyLoaded() {
 async function login() {
     formHelper.clearFormErrors();
     
-    const formData = getFormData();
-
-    const isFormValid = await validateForm(formData);
+    const isFormValid = await validateForm();
     if (!isFormValid) {
         return;
     }
     
-    const userData = await getUserData(formData);
+    const userData = await getUserData();
 
     const service = userType == UserTypes.User.toLowerCase() ? userService : employeeService;
     let isLoggedIn = await service.login(userData);
     
     if (!isLoggedIn) {
-        formHelper.displayError('login-button', 'Username or password is incorrect');
+        formHelper.displayError('login-button', 'Email or password is incorrect');
     }
 };
 
-async function getUserData(data) {
+async function getUserData() {
     return {
-        email: data.email.value,
-        passwordHash: await hashHelper.getSHA256Hash(data.password.value)
+        email: document.getElementById('email').value,
+        passwordHash: await hashHelper.getSHA256Hash(document.getElementById('password').value)
     };
 }
 
@@ -87,32 +87,29 @@ function getUserType() {
     userType = urlParts[userTypeIndex];
 }
 
-function getFormData() {
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
+async function validateForm() {
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
 
-    return {
-        email: emailInput,
-        password: passwordInput
-    };
+    return isEmailValid && isPasswordValid;
 }
 
-async function validateForm(data) {
-    let isFormValid = true;
+function validateEmail() {
+    const emailInput = document.getElementById('email');
 
-    isFormValid &= 
-    formHelper.isInputValueValid(
-            data.email, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Email is required'
-        );
+    return formHelper.isInputValueValid(
+        emailInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Email is required'
+    );
+}
 
-    isFormValid &= 
-    formHelper.isInputValueValid(
-            data.password, 
-            dataValidationHelper.notNullOrEmpty, 
-            'Password is required'
-        );
+function validatePassword() {
+    const passwordInput = document.getElementById('password');
 
-    return isFormValid;
+    return formHelper.isInputValueValid(
+        passwordInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'Password is required'
+    );
 }
