@@ -104,7 +104,8 @@ async function updateFilesTable() {
 
     await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getUserFiles.php`, data)
         .then(response => {
-            const files = JSON.parse(response);
+            const files = JSON.parse(response)
+            .sort((a, b) => -1 * dateTimeHelper.compareDateTimeStrings(a.statusDate, b.statusDate));
 
             const table = document.getElementById('files-table');
             while (table.rows.length > 1) {
@@ -113,12 +114,12 @@ async function updateFilesTable() {
 
             for (let i = 0; i < files.length; i++) {
                 let row = table.insertRow(-1);
-                row.insertCell(-1).innerHTML = files[i]['id'];
-                row.insertCell(-1).innerHTML = files[i]['name'];
-                row.insertCell(-1).innerHTML = files[i]['department'];
-                row.insertCell(-1).innerHTML = files[i]['status'];
-                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTime(files[i]['uploadDate']);
-                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTime(files[i]['statusDate']);
+                row.insertCell(-1).innerHTML = files[i].id;
+                row.insertCell(-1).innerHTML = files[i].name;
+                row.insertCell(-1).innerHTML = files[i].department;
+                row.insertCell(-1).innerHTML = files[i].status;
+                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].uploadDate);
+                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].statusDate);
             }
         })
         .catch(_ => notificationService.error('Error getting files'));

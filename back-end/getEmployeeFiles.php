@@ -12,6 +12,7 @@ $statement = $connection->prepare("
         f.name, 
         d.name AS 'department', 
         u.email AS 'userEmail', 
+        s.id AS 'statusId',
         s.name AS 'status',
         f.uploadDate,
         f.statusDate

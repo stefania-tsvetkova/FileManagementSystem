@@ -10,8 +10,19 @@ const options = {
 };
 
 export class DateTimeHelper {
-    formatDateTime(dateTimeString) {
+    formatDateTimeString(dateTimeString) {
         const dateTime = new Date(dateTimeString);
         return dateTime.toLocaleDateString(locale, options);
+    }
+
+    compareDateTimeStrings(dateTimeString1, dateTimeString2) {
+        const dateTime1 = new Date(dateTimeString1);
+        const dateTime2 = new Date(dateTimeString2);
+
+        if (dateTime1 === dateTime2) {
+            return 0;
+        }
+        
+        return dateTime1 < dateTime2 ? -1 : 1;
     }
 }

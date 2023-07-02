@@ -40,6 +40,10 @@ button:hover {
     background-color: #243751;
 }
 
+button:disabled {
+    background-color: rgb(128, 128, 128);
+}
+
 .header {
     display: flex;
     position: fixed;

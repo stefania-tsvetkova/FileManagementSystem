@@ -1,4 +1,4 @@
-.approve-button {
+button:not(:last-of-type) {
     margin-right: 10px;
 }
 
@@ -8,8 +8,4 @@
 
 .reject-button {
     background-color: #990000;
-}
-
-.files-table .actions-column {
-    width: 170px !important;
 }

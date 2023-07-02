@@ -38,9 +38,10 @@ CREATE TABLE statuses(
 );
 
 INSERT INTO statuses(name)
-VALUES  ('Uploaded'), 
+VALUES  ('Uploaded'),
         ('Approved'),
-        ('Rejected');
+        ('Rejected'), 
+        ('Reviewing');
 
 CREATE TABLE files(
 	id INT AUTO_INCREMENT PRIMARY KEY,

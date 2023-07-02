@@ -44,7 +44,8 @@ async function updateFilesTable() {
     
     await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getEmployeeFiles.php`, data)
         .then(response => {
-            const files = JSON.parse(response);
+            const files = JSON.parse(response)
+                .sort((a, b) => -1 * dateTimeHelper.compareDateTimeStrings(a.statusDate, b.statusDate));
 
             const table = document.getElementById('files-table');
             while (table.rows.length > 1) {
@@ -53,33 +54,42 @@ async function updateFilesTable() {
 
             for (let i = 0; i < files.length; i++) {
                 let row = table.insertRow(-1);
-                row.insertCell(-1).innerHTML = files[i]['id'];
-                row.insertCell(-1).innerHTML = files[i]['name'];
-                row.insertCell(-1).innerHTML = files[i]['department'];
-                row.insertCell(-1).innerHTML = files[i]['userEmail'];
-                row.insertCell(-1).innerHTML = files[i]['status'];
-                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTime(files[i]['uploadDate']);
-                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTime(files[i]['statusDate']);
-                row.insertCell(-1).innerHTML = getActionsHtml(files[i]['id']);
+                row.insertCell(-1).innerHTML = files[i].id;
+                row.insertCell(-1).innerHTML = files[i].name;
+                row.insertCell(-1).innerHTML = files[i].department;
+                row.insertCell(-1).innerHTML = files[i].userEmail;
+                row.insertCell(-1).innerHTML = files[i].status;
+                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].uploadDate);
+                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].statusDate);
+                row.insertCell(-1).innerHTML = getActionsHtml(files[i].id, files[i].statusId);
             }
         })
         .catch(_ => notificationService.error('Error getting files'));
 }
 
-function getActionsHtml(fileId) {
+function getActionsHtml(fileId, statusId) {
+    const reviewButtonHtml = `
+        <button
+            ${statusId == StatusIds.Uploaded ? '' : 'disabled'}
+            onclick="setFileStatus(${fileId}, ${StatusIds.Reviewing})">
+            Review
+        </button>`;
+
     const approveButtonHtml = `
         <button 
-            class='approve-button'
-            onclick='setFileStatus(${fileId}, ${StatusIds.Approved})'>
+            class="approve-button"
+            ${statusId == StatusIds.Reviewing ? '' : 'disabled'}
+            onclick="setFileStatus(${fileId}, ${StatusIds.Approved})">
             Approve
         </button>`;
 
     const rejectButtonHtml = `
         <button 
-            class='reject-button'
-            onclick='setFileStatus(${fileId}, ${StatusIds.Rejected})'>
+            class="reject-button"
+            ${statusId == StatusIds.Reviewing ? '' : 'disabled'}
+            onclick="setFileStatus(${fileId}, ${StatusIds.Rejected})">
             Reject
         </button>`;
 
-    return `${approveButtonHtml}${rejectButtonHtml}`;
+    return `${reviewButtonHtml}${approveButtonHtml}${rejectButtonHtml}`;
 }
