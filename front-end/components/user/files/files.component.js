@@ -6,18 +6,21 @@ import { UserSessionService } from '../../../services/user-session.service.js';
 import { SERVER_CODE_DIRECTORY } from '../../../constants/url.constants.js';
 import { DateTimeHelper } from '../../../helpers/date-time.helper.js';
 import { DepartmentService } from '../../../services/department.service.js';
+import { FileService } from '../../../services/file.service.js';
 
 window.bodyLoaded = bodyLoaded;
 window.selectedDepartmentChanged = selectedDepartmentChanged;
 window.chooseFilesButtonClicked = chooseFilesButtonClicked;
 window.selectedFileChanged = selectedFileChanged;
 window.uploadFile = uploadFile;
+window.download = download;
 
 const requestService = new RequestService();
 const notificationService = new NotificationService();
 const userSessionService = new UserSessionService();
 const dateTimeHelper = new DateTimeHelper();
 const departmentService = new DepartmentService();
+const fileService = new FileService();
 
 function bodyLoaded() {
     // we don't await these async functions so they can be executed parallelly
@@ -68,7 +71,10 @@ async function uploadFile() {
 
     await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/uploadFile.php`, data)
         .then(response => {
-            if (response !== '') {
+            if (isNaN(+response)) {
+                throw response;
+            }
+            if (response !== null) {
                 notificationService.success(`File uploaded - the No. Ref. is ${response}`);
                 updateFilesTable();
                 return;
@@ -118,9 +124,24 @@ async function updateFilesTable() {
                 row.insertCell(-1).innerHTML = files[i].status;
                 row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].uploadDate);
                 row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].statusDate);
+                row.insertCell(-1).innerHTML = getActionsHtml(files[i].id, files[i].name);
             }
         })
         .catch(_ => notificationService.error('Error getting files'));
+}
+
+function download(fileId, fileName) {
+    fileService.download(fileId, fileName);
+}
+
+function getActionsHtml(fileId, fileName) {
+    const downloadButtonHtml = `
+        <button
+            onclick="download(${fileId}, '${fileName}')">
+            Download
+        </button>`;
+
+    return `${downloadButtonHtml}`;
 }
 
 function getSelectedFile() {

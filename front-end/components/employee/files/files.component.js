@@ -4,14 +4,17 @@ import { UserSessionService } from '../../../services/user-session.service.js';
 import { StatusIds } from '../../../constants/status-ids.constants.js';
 import { SERVER_CODE_DIRECTORY } from '../../../constants/url.constants.js';
 import { DateTimeHelper } from '../../../helpers/date-time.helper.js';
+import { FileService } from '../../../services/file.service.js';
 
 window.bodyLoaded = bodyLoaded;
 window.setFileStatus = setFileStatus;
+window.download = download;
 
 const requestService = new RequestService();
 const notificationService = new NotificationService();
 const userSessionService = new UserSessionService();
 const dateTimeHelper = new DateTimeHelper();
+const fileService = new FileService();
 
 function bodyLoaded() {
     // we don't await these async functions so they can be executed parallelly
@@ -35,6 +38,10 @@ async function setFileStatus(fileId, statusId) {
             updateFilesTable();
         })
         .catch(_ => notificationService.error('Error getting files'));
+}
+
+function download(fileId, fileName) {
+    fileService.download(fileId, fileName);
 }
 
 async function updateFilesTable() {
@@ -61,13 +68,13 @@ async function updateFilesTable() {
                 row.insertCell(-1).innerHTML = files[i].status;
                 row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].uploadDate);
                 row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTimeString(files[i].statusDate);
-                row.insertCell(-1).innerHTML = getActionsHtml(files[i].id, files[i].statusId);
+                row.insertCell(-1).innerHTML = getActionsHtml(files[i].id, files[i].name, files[i].statusId);
             }
         })
         .catch(_ => notificationService.error('Error getting files'));
 }
 
-function getActionsHtml(fileId, statusId) {
+function getActionsHtml(fileId, fileName, statusId) {
     const reviewButtonHtml = `
         <button
             ${statusId == StatusIds.Uploaded ? '' : 'disabled'}
@@ -91,5 +98,11 @@ function getActionsHtml(fileId, statusId) {
             Reject
         </button>`;
 
-    return `${reviewButtonHtml}${approveButtonHtml}${rejectButtonHtml}`;
+        const downloadButtonHtml = `
+            <button
+                onclick="download(${fileId}, '${fileName}')">
+                Download
+            </button>`;
+
+    return `${reviewButtonHtml}${approveButtonHtml}${rejectButtonHtml}${downloadButtonHtml}`;
 }

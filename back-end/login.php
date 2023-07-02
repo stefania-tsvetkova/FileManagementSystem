@@ -1,21 +1,21 @@
 <?php
-require_once 'Db.php';
+    require_once 'Db.php';
 
-$db = new Db();
+    $db = new Db();
 
-$connection = $db->getConnection();
+    $connection = $db->getConnection();
 
-$statement = $connection->prepare("
-    SELECT id FROM users
-    WHERE email = :email AND passwordHash = :passwordHash
-");
+    $statement = $connection->prepare("
+        SELECT id FROM users
+        WHERE email = :email AND passwordHash = :passwordHash
+    ");
 
-$statement->execute([
-    "email" => $_GET["email"],
-    "passwordHash" => $_GET["passwordHash"]
-]);
+    $statement->execute([
+        "email" => $_GET["email"],
+        "passwordHash" => $_GET["passwordHash"]
+    ]);
 
-$userId = $statement->fetch(PDO::FETCH_ASSOC);
+    $userId = $statement->fetch(PDO::FETCH_ASSOC);
 
-print_r(json_encode($userId));
+    print_r(json_encode($userId));
 ?>
