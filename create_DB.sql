@@ -32,6 +32,9 @@ CREATE TABLE employees(
     CONSTRAINT fk_employees_departments FOREIGN KEY(departmentId) REFERENCES departments(id)
 );
 
+INSERT INTO employees(email, name, familyName, passwordHash, isAdmin, departmentId)
+VALUES ('stefania@my-employees.com', 'Stefania', 'Tsvetkova', '9b8769a4a742959a2d0298c36fb70623f2dfacda8436237df08d8dfd5b37374c', 1, 1);
+
 CREATE TABLE statuses(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL
