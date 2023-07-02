@@ -98,8 +98,8 @@ function validateConfirmNewPassword() {
     &&
     formHelper.isInputValueValid(
         confirmNewPasswordInput, 
-        password => dataValidationHelper.isPasswordConfirmationValid(newPassword, password), 
-        'Password confirmation doesn\'t match the new password'
+        confirmPassword => dataValidationHelper.isPasswordConfirmationValid(newPassword, confirmPassword), 
+        'Password confirmation should match the new password'
     );
 }
 

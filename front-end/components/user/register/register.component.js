@@ -11,6 +11,7 @@ window.validateEmail = validateEmail;
 window.validateName = validateName;
 window.validateFamilyName = validateFamilyName;
 window.validatePassword = validatePassword;
+window.validateConfirmPassword = validateConfirmPassword;
 window.register = register;
 
 const userService = new UserService();
@@ -66,8 +67,9 @@ async function validateForm() {
     const isNameValid = validateName();
     const isFamilyNameValid = validateFamilyName();
     const isPasswordValid = validatePassword();
+    const isConfirmPasswordValid = validateConfirmPassword();
 
-    return isEmailValid && isNameValid && isFamilyNameValid && isPasswordValid;
+    return isEmailValid && isNameValid && isFamilyNameValid && isPasswordValid && isConfirmPasswordValid;
 }
 
 async function validateEmail() {
@@ -137,6 +139,23 @@ function validatePassword() {
         passwordInput, 
         dataValidationHelper.isPasswordValid, 
         'Password must be between 5 and 50 characters, and can contain uppercase letters, lowercase letters, and numbers'
+    );
+}
+
+function validateConfirmPassword() {
+    const password = document.getElementById('password').value;
+    const confirmPasswordInput = document.getElementById('confirm-password');
+
+    return formHelper.isInputValueValid(
+        confirmPasswordInput, 
+        dataValidationHelper.notNullOrEmpty, 
+        'New password confirmation is required'
+    )
+    &&
+    formHelper.isInputValueValid(
+        confirmPasswordInput, 
+        confirmPassword => dataValidationHelper.isPasswordConfirmationValid(password, confirmPassword), 
+        'Password confirmation should match the password'
     );
 }
 
