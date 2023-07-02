@@ -17,7 +17,7 @@ function bodyLoaded() {
 }
 
 async function updateEmployeesTable() {
-    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getEmployees.php`)
+    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/admin/getEmployees.php`)
         .then(response => {
             const employees = JSON.parse(response);
 

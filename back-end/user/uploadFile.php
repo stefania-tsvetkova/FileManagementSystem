@@ -1,6 +1,6 @@
 <?php
-    require_once "Db.php";
-    require_once "helpers.php";
+    require_once "../Db.php";
+    require_once "../helpers.php";
 
     if (!isset($_FILES['file']['name'])) {
         print_r(0);

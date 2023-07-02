@@ -1,12 +1,12 @@
 <?php
-    require_once 'Db.php';
+    require_once "../Db.php";
 
     $db = new Db();
 
     $connection = $db->getConnection();
 
     $statement = $connection->prepare("
-        SELECT COUNT(*) AS 'count' FROM employees
+        SELECT COUNT(*) AS 'count' FROM users
         WHERE id = :userId AND passwordHash = :passwordHash
     ");
 

@@ -1,5 +1,5 @@
 <?php
-    require_once 'helpers.php';
+    require_once "../helpers.php";
 
     $file = getFileLocation($_GET["fileId"], $_GET["fileName"]);
 

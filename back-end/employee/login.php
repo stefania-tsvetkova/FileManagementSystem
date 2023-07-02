@@ -1,12 +1,12 @@
 <?php
-    require_once 'Db.php';
+    require_once "../Db.php";
 
     $db = new Db();
 
     $connection = $db->getConnection();
 
     $statement = $connection->prepare("
-        SELECT id FROM users
+        SELECT id, isAdmin FROM employees
         WHERE email = :email AND passwordHash = :passwordHash
     ");
 
@@ -15,7 +15,7 @@
         "passwordHash" => $_GET["passwordHash"]
     ]);
 
-    $userId = $statement->fetch(PDO::FETCH_ASSOC);
+    $userData = $statement->fetch(PDO::FETCH_ASSOC);
 
-    print_r(json_encode($userId));
+    print_r(json_encode($userData));
 ?>

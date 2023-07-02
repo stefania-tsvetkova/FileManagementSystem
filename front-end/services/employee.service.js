@@ -14,7 +14,7 @@ export class EmployeeService {
             email: email
         });
 
-        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employeeEmailExists.php`, data)
+        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employee/emailExists.php`, data)
             .then(response => response == '1')
             .catch(error => notificationService.error(error));
     }
@@ -25,7 +25,7 @@ export class EmployeeService {
             passwordHash: user.passwordHash
         });
 
-        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employeeLogin.php`, data)
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employee/login.php`, data)
             .catch(_ => notificationService.error('Login unsuccessful due to a server error'));
     
         if (response === 'false') {
@@ -50,7 +50,7 @@ export class EmployeeService {
         data.append("departmentId", employee.departmentId);
         data.append("isAdmin", employee.isAdmin ? 1 : 0);
 
-        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/addEmployee.php`, data)
+        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/admin/addEmployee.php`, data)
             .catch(_ => notificationService.error('Adding employee unsuccessful due to a server error'));
 
         return response === '1';
@@ -62,7 +62,7 @@ export class EmployeeService {
             passwordHash: passwordHash
         });
 
-        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/validateEmployeePassword.php`, data)
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employee/validatePassword.php`, data)
             .catch(_ => notificationService.error('Old password validation unsuccessful due to a server error'));
             
         return response === '1';
@@ -74,7 +74,7 @@ export class EmployeeService {
             passwordHash: passwordHash
         });
 
-        const response = await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/changeEmployeePassword.php`, data)
+        const response = await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/employee/changePassword.php`, data)
             .catch(_ => notificationService.error('Change password due to a server error'));
 
         return response === '1';

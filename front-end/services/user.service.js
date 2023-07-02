@@ -14,7 +14,7 @@ export class UserService {
             email: email
         });
 
-        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/userEmailExists.php`, data)
+        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/user/emailExists.php`, data)
             .then(response => response == '1')
             .catch(error => notificationService.error(error));
     }
@@ -26,7 +26,7 @@ export class UserService {
         data.append("familyName", user.familyName);
         data.append("passwordHash", user.passwordHash);
 
-        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/register.php`, data)
+        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/user/register.php`, data)
             .catch(_ => notificationService.error('Registration unsuccessful due to a server error'));
 
         return response === '1';
@@ -38,7 +38,7 @@ export class UserService {
             passwordHash: user.passwordHash
         });
 
-        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/login.php`, data)
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/user/login.php`, data)
             .catch(_ => notificationService.error('Login unsuccessful due to a server error'));
 
         if (response === 'false') {
@@ -64,7 +64,7 @@ export class UserService {
             passwordHash: passwordHash
         });
 
-        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/validateUserPassword.php`, data)
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/user/validatePassword.php`, data)
             .catch(_ => notificationService.error('Old password validation unsuccessful due to a server error'));
 
         return response === '1';
@@ -76,7 +76,7 @@ export class UserService {
             passwordHash: passwordHash
         });
 
-        const response = await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/changePassword.php`, data)
+        const response = await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/user/changePassword.php`, data)
             .catch(_ => notificationService.error('Change password due to a server error'));
 
         return response === '1';

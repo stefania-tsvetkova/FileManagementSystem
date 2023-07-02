@@ -27,7 +27,7 @@ async function setFileStatus(fileId, statusId) {
         statusId: statusId
     });
     
-    await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/updateFileStatus.php`, data)
+    await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/employee/updateFileStatus.php`, data)
         .then(isSuccessful => {
             if (!isSuccessful) {
                 notificationService.error('Error updating file status');
@@ -49,7 +49,7 @@ async function updateFilesTable() {
         employeeId: userSessionService.getCurrentUserId()
     });
     
-    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getEmployeeFiles.php`, data)
+    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employee/getFiles.php`, data)
         .then(response => {
             const files = JSON.parse(response)
                 .sort((a, b) => -1 * dateTimeHelper.compareDateTimeStrings(a.statusDate, b.statusDate));

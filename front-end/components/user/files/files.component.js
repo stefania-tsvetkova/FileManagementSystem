@@ -69,7 +69,7 @@ async function uploadFile() {
     data.append("departmentId", departmentId);
     data.append("statusId", StatusIds.Uploaded);
 
-    await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/uploadFile.php`, data)
+    await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/user/uploadFile.php`, data)
         .then(response => {
             if (isNaN(+response)) {
                 throw response;
@@ -106,7 +106,7 @@ async function updateFilesTable() {
         userId: userSessionService.getCurrentUserId()
     });
 
-    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getUserFiles.php`, data)
+    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/user/getUserFiles.php`, data)
         .then(response => {
             const files = JSON.parse(response)
             .sort((a, b) => -1 * dateTimeHelper.compareDateTimeStrings(a.statusDate, b.statusDate));

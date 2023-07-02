@@ -1,11 +1,13 @@
 <?php
-    require_once "Db.php";
+    require_once "../Db.php";
 
     parse_str(file_get_contents("php://input"), $put);
 
     $db = new Db();
 
     $connection = $db->getConnection();
+
+    print_r($put["fileId"] . " - " . $put["statusId"]);
 
     $statement = $connection->prepare("
         UPDATE files AS f

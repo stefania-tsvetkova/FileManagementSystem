@@ -1,6 +1,6 @@
 <?php
-    require_once 'Db.php';
-    require_once 'helpers.php';
+    require_once "../Db.php";
+    require_once "../helpers.php";
 
     $db = new Db();
 

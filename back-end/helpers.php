@@ -14,7 +14,7 @@
     }
     
     function getFileLocation($fileId, $fileName): string {
-        $uploadDirectory = '../uploads/';
+        $uploadDirectory = '../../uploads/';
         $file_extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
         return  $uploadDirectory . $fileId . '.' . $file_extension;

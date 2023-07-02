@@ -12,7 +12,7 @@ export class FileService {
             fileName: fileName
         });
         
-        requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/downloadFile.php`, data)
+        requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/common/downloadFile.php`, data)
             .then(response => {
                 if (response === '') {
                     notificationService.error('File download failed');

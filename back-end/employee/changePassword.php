@@ -1,5 +1,5 @@
 <?php
-    require_once "Db.php";
+    require_once "../Db.php";
 
     parse_str(file_get_contents("php://input"), $put);
 
@@ -8,13 +8,13 @@
     $connection = $db->getConnection();
 
     $statement = $connection->prepare("
-        UPDATE users
+        UPDATE employees
         SET passwordHash = :passwordHash
-        WHERE id = :userId
+        WHERE id = :employeeId
     ");
 
     $isSuccessful = $statement->execute([
-        "userId" => $put["userId"],
+        "employeeId" => $put["employeeId"],
         "passwordHash" => $put["passwordHash"]
     ]);
 
