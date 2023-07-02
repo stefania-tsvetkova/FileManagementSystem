@@ -4,6 +4,7 @@ import { StatusIds } from '../../../constants/status-ids.constants.js';
 import { NotificationService } from '../../../services/notification.service.js';
 import { UserSessionService } from '../../../services/user-session.service.js';
 import { SERVER_CODE_DIRECTORY } from '../../../constants/url.constants.js';
+import { DateTimeHelper } from '../../../helpers/date-time.helper.js';
 
 window.bodyLoaded = bodyLoaded;
 window.selectedDepartmentChanged = selectedDepartmentChanged;
@@ -14,6 +15,7 @@ window.uploadFile = uploadFile;
 const requestService = new RequestService();
 const notificationService = new NotificationService();
 const userSessionService = new UserSessionService();
+const dateTimeHelper = new DateTimeHelper();
 
 function bodyLoaded() {
     // we don't await these async function so they can be executed parallelly
@@ -115,6 +117,8 @@ async function updateFilesTable() {
                 row.insertCell(-1).innerHTML = files[i]['name'];
                 row.insertCell(-1).innerHTML = files[i]['department'];
                 row.insertCell(-1).innerHTML = files[i]['status'];
+                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTime(files[i]['uploadDate']);
+                row.insertCell(-1).innerHTML = dateTimeHelper.formatDateTime(files[i]['statusDate']);
             }
         })
         .catch(_ => notificationService.error('Error getting files'));

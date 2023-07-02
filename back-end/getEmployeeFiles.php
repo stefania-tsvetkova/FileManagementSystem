@@ -12,7 +12,9 @@ $statement = $connection->prepare("
         f.name, 
         d.name AS 'department', 
         u.email AS 'userEmail', 
-        s.name AS 'status' 
+        s.name AS 'status',
+        f.uploadDate,
+        f.statusDate
     FROM files AS f
     JOIN employees AS e
     ON e.isAdmin OR e.departmentId = f.departmentId

@@ -1,5 +1,4 @@
 import { CLIENT_CODE_DIRECTORY, UserTypeComponentDirectories } from '../constants/url.constants.js';
-import { UserTypes } from '../constants/user-types.constants.js';
 
 export class UrlHelper {
     constructUrl(componentName, userType) {

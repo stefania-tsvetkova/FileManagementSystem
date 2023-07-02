@@ -45,10 +45,25 @@ VALUES  ('Uploaded'),
 CREATE TABLE files(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    userId INT,
-    departmentId INT,
-    statusId INT,
+    userId INT NOT NULL,
+    departmentId INT NOT NULL,
+    statusId INT NOT NULL,
+    uploadDate DATETIME NOT NULL,
+    statusDate DATETIME NOT NULL,
     CONSTRAINT fk_files_users FOREIGN KEY(userId) REFERENCES users(id),
     CONSTRAINT fk_files_departments FOREIGN KEY(departmentId) REFERENCES departments(id),
     CONSTRAINT fk_files_statuses FOREIGN KEY(statusId) REFERENCES statuses(id)
 );
+
+DELIMITER ;;
+CREATE TRIGGER files_before_insert BEFORE INSERT ON files FOR EACH ROW
+BEGIN
+	SET NEW.uploadDate = NOW();
+    SET NEW.statusDate = NEW.uploadDate;
+END;;
+
+CREATE TRIGGER files_before_update BEFORE UPDATE ON files FOR EACH ROW
+BEGIN
+    SET NEW.statusDate = NOW();
+END;;
+DELIMITER ;
