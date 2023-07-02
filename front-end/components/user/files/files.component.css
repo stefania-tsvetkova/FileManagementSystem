@@ -1,3 +1,9 @@
+.icon-button:not(:last-of-type),
+.icon-button:not(:last-of-type):disabled,
+.icon-button:not(:last-of-type):hover {
+    margin-right: 10px;
+}
+
 .file-input {
     display: none;
 }
@@ -10,4 +16,8 @@
 
 .upload-file *{
     margin-right: 10px;
+}
+
+td:last-of-type {
+    text-align: center;
 }

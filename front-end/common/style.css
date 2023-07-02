@@ -1,3 +1,5 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css");
+
 .error-message {
     color: #990000;
 }
@@ -43,6 +45,26 @@ button:hover {
 
 button:disabled {
     background-color: rgb(128, 128, 128);
+}
+
+.icon-button,
+.icon-button:disabled,
+.icon-button:hover {
+    all: unset;
+    font-size: 25px;
+}
+
+.icon-button:hover:not(:disabled) {
+    cursor: pointer;
+    color: #243751;
+}
+
+.icon-button {
+    color: #4c75af;
+}
+
+.icon-button:disabled {
+    color: rgb(105, 105, 105);
 }
 
 .header {

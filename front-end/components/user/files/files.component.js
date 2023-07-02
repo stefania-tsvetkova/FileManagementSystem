@@ -137,8 +137,10 @@ function download(fileId, fileName) {
 function getActionsHtml(fileId, fileName) {
     const downloadButtonHtml = `
         <button
+            class="icon-button"
+            title="Download"
             onclick="download(${fileId}, '${fileName}')">
-            Download
+            <i class="fa fa-download"></i>
         </button>`;
 
     return `${downloadButtonHtml}`;

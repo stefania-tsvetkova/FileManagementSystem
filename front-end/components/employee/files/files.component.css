@@ -1,11 +1,25 @@
-button:not(:last-of-type) {
+.icon-button:not(:last-of-type),
+.icon-button:not(:last-of-type):disabled,
+.icon-button:not(:last-of-type):hover {
     margin-right: 10px;
 }
 
-.approve-button {
-    background-color: #336900;
+.approve-button:not(:disabled) {
+    color: #336900;
 }
 
-.reject-button {
-    background-color: #990000;
+.approve-button:hover:not(:disabled) {
+    color: #254d00;
+}
+
+.reject-button:not(:disabled) {
+    color: #990000;
+}
+
+.reject-button:hover:not(:disabled) {
+    color: #5f0000;
+}
+
+td:last-of-type {
+    text-align: center;
 }

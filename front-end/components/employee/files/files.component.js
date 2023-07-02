@@ -77,31 +77,37 @@ async function updateFilesTable() {
 function getActionsHtml(fileId, fileName, statusId) {
     const reviewButtonHtml = `
         <button
+            class="icon-button"
             ${statusId == StatusIds.Uploaded ? '' : 'disabled'}
+            title="Review"
             onclick="setFileStatus(${fileId}, ${StatusIds.Reviewing})">
-            Review
+            <i class="fa fa-pen-to-square"></i>
         </button>`;
 
     const approveButtonHtml = `
         <button 
-            class="approve-button"
+            class="icon-button approve-button"
             ${statusId == StatusIds.Reviewing ? '' : 'disabled'}
+            title="Approve"
             onclick="setFileStatus(${fileId}, ${StatusIds.Approved})">
-            Approve
+            <i class="fa fa-square-check"></i>
         </button>`;
 
     const rejectButtonHtml = `
         <button 
-            class="reject-button"
+            class="icon-button reject-button"
             ${statusId == StatusIds.Reviewing ? '' : 'disabled'}
+            title="Reject"
             onclick="setFileStatus(${fileId}, ${StatusIds.Rejected})">
-            Reject
+            <i class="fa fa-square-xmark"></i>
         </button>`;
 
         const downloadButtonHtml = `
             <button
+                class="icon-button"
+                title="Download"
                 onclick="download(${fileId}, '${fileName}')">
-                Download
+                <i class="fa fa-download"></i>
             </button>`;
 
     return `${reviewButtonHtml}${approveButtonHtml}${rejectButtonHtml}${downloadButtonHtml}`;
