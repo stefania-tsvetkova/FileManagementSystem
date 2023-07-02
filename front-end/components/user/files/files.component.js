@@ -5,6 +5,7 @@ import { NotificationService } from '../../../services/notification.service.js';
 import { UserSessionService } from '../../../services/user-session.service.js';
 import { SERVER_CODE_DIRECTORY } from '../../../constants/url.constants.js';
 import { DateTimeHelper } from '../../../helpers/date-time.helper.js';
+import { DepartmentService } from '../../../services/department.service.js';
 
 window.bodyLoaded = bodyLoaded;
 window.selectedDepartmentChanged = selectedDepartmentChanged;
@@ -16,9 +17,10 @@ const requestService = new RequestService();
 const notificationService = new NotificationService();
 const userSessionService = new UserSessionService();
 const dateTimeHelper = new DateTimeHelper();
+const departmentService = new DepartmentService();
 
 function bodyLoaded() {
-    // we don't await these async function so they can be executed parallelly
+    // we don't await these async functions so they can be executed parallelly
     setDepartments();
     updateFilesTable();
 }
@@ -83,18 +85,14 @@ function selectedDepartmentChanged() {
 }
 
 async function setDepartments() {
-    await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/getDepartments.php`)
-        .then(response => {
-            const departments = JSON.parse(response)
-                .sort((a, b) => a.name.localeCompare(b.name));
-
+    await departmentService.getDepartments()
+        .then(departments => {
             const departmentsDropdownElement = document.getElementById('departments-dropdown');
             departments.forEach(department => {
                 const optionHtml = `<option value='${department.id}'>${department.name}</option>`;
                 departmentsDropdownElement.insertAdjacentHTML('beforeEnd', optionHtml);
             });
-        })
-        .catch(_ => notificationService.error('Error getting departments'));
+        });
 }
 
 async function updateFilesTable() {

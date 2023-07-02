@@ -8,28 +8,15 @@ const requestService = new RequestService();
 const notificationService = new NotificationService();
 const userSessionService = new UserSessionService();
 
-export class UserService {
+export class EmployeeService {
     emailExists(email) {
         let data = new URLSearchParams({
             email: email
         });
 
-        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/userEmailExists.php`, data)
+        return requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employeeEmailExists.php`, data)
             .then(response => response == '1')
             .catch(error => notificationService.error(error));
-    }
-
-    async register(user) {
-        let data = new FormData();
-        data.append("email", user.email);
-        data.append("name", user.name);
-        data.append("familyName", user.familyName);
-        data.append("passwordHash", user.passwordHash);
-
-        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/register.php`, data)
-            .catch(_ => notificationService.error('Registration unsuccessful due to a server error'));
-
-        return response === '1';
     }
 
     async login(user) {
@@ -38,23 +25,34 @@ export class UserService {
             passwordHash: user.passwordHash
         });
 
-        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/login.php`, data)
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/employeeLogin.php`, data)
             .catch(_ => notificationService.error('Login unsuccessful due to a server error'));
-
+    
         if (response === 'false') {
             return false;
         }
         
-        const userId = JSON.parse(response).id;
-        
-        userSessionService.setCurrentUser(userId, UserTypes.User);
+        const userData = JSON.parse(response);
+        const userType = userData.isAdmin ? UserTypes.Admin : UserTypes.Employee;
+
+        userSessionService.setCurrentUser(userData.id, userType);
         window.location.replace('../../../index.html');
 
         return true;
     }
 
-    logout() {
-        userSessionService.removeCurrentUser();
-        window.location.replace('../../../index.html');
+    async addEmployee(employee) {
+        let data = new FormData();
+        data.append("email", employee.email);
+        data.append("name", employee.name);
+        data.append("familyName", employee.familyName);
+        data.append("passwordHash", employee.passwordHash);
+        data.append("departmentId", employee.departmentId);
+        data.append("isAdmin", employee.isAdmin);
+
+        const response = await requestService.post(`../../../../${SERVER_CODE_DIRECTORY}/addEmployee.php`, data)
+            .catch(_ => notificationService.error('Adding employee unsuccessful due to a server error'));
+
+        return response === '1';
     }
 }

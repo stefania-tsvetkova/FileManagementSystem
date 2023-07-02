@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>File management system</title>
+
+    <meta charset="UTF-8">
+
+    <link href="../../../common/style.css" rel="stylesheet">
+    <link href="./employees.component.css" rel="stylesheet">
+
+    <script type="module" src="../../../common/header/header.js" async></script>
+    <script type="module" src="employees.component.js" async></script>
+</head>
+
+<body onload="addHeader(); bodyLoaded()">
+    <div class="page-content">
+        <div class="table-info">
+            <h1 class="heading">Employees</h1>
+            <button onclick="addEmployee()">Add employee</button>
+        </div>
+
+        <table id="employees-table">
+            <tr>
+                <th>Email</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Department</th>
+                <th>Type</th>
+            </tr>
+        </table>
+    </div>
+</body>
+
+</html>

@@ -1,75 +1,81 @@
-import { UserService } from '../../../services/user.service.js';
 import { HashHelper } from '../../../helpers/hash.helper.js';
-import { UrlHelper} from '../../../helpers/url.helper.js'
 import { DataValidationHelper} from '../../../helpers/data-validation.helper.js'
 import { FormHelper} from '../../../helpers/form.helper.js'
 import { NotificationService } from "../../../services/notification.service.js";
-import { UserTypes } from '../../../constants/user-types.constants.js';
+import { EmployeeService } from '../../../services/employee.service.js';
+import { DepartmentService } from '../../../services/department.service.js';
 
-window.register = register;
+window.addEmployee = addEmployee;
 window.bodyLoaded = bodyLoaded;
 
-const userService = new UserService();
+const employeeService = new EmployeeService();
 const hashHelper = new HashHelper();
-const urlHelper = new UrlHelper();
 const dataValidationHelper = new DataValidationHelper();
 const formHelper = new FormHelper();
 const notificationService = new NotificationService();
+const departmentService = new DepartmentService();
 
 function bodyLoaded() {
-    const loginUrl = urlHelper.constructUrl('login', UserTypes.User);
-    const loginButtonElement = document.getElementById("login-button");
-    loginButtonElement.setAttribute("href", loginUrl);
-
-    const employeeLoginButtonElement = document.getElementById("employee-login-button");
-    const employeeLoginUrl = urlHelper.constructUrl('login', UserTypes.Employee);
-    employeeLoginButtonElement.setAttribute("href", employeeLoginUrl);
+    // we don't await these async functions so they can be executed parallelly
+    setDepartments();
 }
 
-async function register() {
+async function setDepartments() {
+    await departmentService.getDepartments()
+        .then(departments => {
+            const departmentsDropdownElement = document.getElementById('department');
+            departments.forEach(department => {
+                const optionHtml = `<option value='${department.id}'>${department.name}</option>`;
+                departmentsDropdownElement.insertAdjacentHTML('beforeEnd', optionHtml);
+            });
+        });
+}
+
+async function addEmployee() {
     formHelper.clearFormErrors();
     
-    const data = getRegisterData();
+    const data = getFormData();
 
     const isFormValid = await validateForm(data);
     if (!isFormValid) {
         return;
     }
     
-    const userData = await getUserData(data);
-    const isRegistered = await userService.register(userData);
-    
-    if (!isRegistered) {
-        notificationService.error("There was an error. Please try again later");
-        return;
-    }
-
-    const isLoggedIn = await userService.login(userData);
-    if (!isLoggedIn) {
-        notificationService.error("User was registered but can't be logged in. Please try again later");
-    }
+    const employeeData = await getEmployeeData(data);
+    employeeService.addEmployee(employeeData)
+        .then(isAdded => {
+            isAdded ? 
+                notificationService.success('Employee was added') :
+                notificationService.error('Error adding employee');
+        });
 };
 
-async function getUserData(data) {
+async function getEmployeeData(data) {
     return {
         email: data.email.value,
         name: data.name.value,
         familyName: data.familyName.value,
-        passwordHash: await hashHelper.getSHA256Hash(data.password.value)
+        passwordHash: await hashHelper.getSHA256Hash(data.password.value),
+        departmentId: data.department.value,
+        isAdmin: data.isAdmin.checked
     };
 }
 
-function getRegisterData() {
+function getFormData() {
     const emailInput = document.getElementById('email');
     const nameInput = document.getElementById('name');
     const familyNameInput = document.getElementById('family-name');
     const passwordInput = document.getElementById('password');
+    const departmentInput = document.getElementById('department');
+    const isAdminInput = document.getElementById('is-admin');
 
     return {
         email: emailInput,
         name: nameInput,
         familyName: familyNameInput,
-        password: passwordInput
+        password: passwordInput,
+        department: departmentInput,
+        isAdmin: isAdminInput
     };
 }
 
@@ -92,7 +98,7 @@ async function validateForm(data) {
         (await formHelper.isInputValueValidAsync(
             data.email, 
             isEmailNotUsed, 
-            'User with this email already exists'
+            'Employee with this email already exists'
         ));
 
     isFormValid &= 
@@ -134,9 +140,18 @@ async function validateForm(data) {
             'Password must be between 5 and 50 characters, and can contain uppercase letters, lowercase letters, and numbers'
         );
 
+    
+
+    isFormValid &= 
+        formHelper.isInputValueValid(
+            data.department, 
+            dataValidationHelper.notNullOrEmpty, 
+            'Department is required'
+        );
+
     return isFormValid;
 }
 
 async function isEmailNotUsed(email) {
-    return !(await userService.emailExists(email));
+    return !(await employeeService.emailExists(email));
 }

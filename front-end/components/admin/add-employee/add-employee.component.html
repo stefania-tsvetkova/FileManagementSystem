@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>File management system</title>
+
+    <meta charset="UTF-8">
+
+    <link href="../../../common/style.css" rel="stylesheet">
+    <link href="./add-employee.component.css" rel="stylesheet">
+
+    <script type="module" src="../../../common/header/header.js" async></script>
+    <script type="module" src="./add-employee.component.js" async></script>
+</head>
+
+<body onload="addHeader(); bodyLoaded()">
+    <div class="page-content">
+        <h1 class="title">Add employee</h1>
+
+        <div class="centered-container">
+            <form id="add-employee-form" class="centered-form" onsubmit="event.preventDefault(); addEmployee();">
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="text" id="email">
+                    <span id="email-error" class="error-message"></span>
+                </div>
+
+                <div>
+                    <label for="name">First Name:</label>
+                    <input type="text" id="name">
+                    <span id="name-error" class="error-message"></span>
+                </div>
+
+                <div>
+                    <label for="family-name">Last Name:</label>
+                    <input type="text" id="family-name">
+                    <span id="family-name-error" class="error-message"></span>
+                </div>
+
+                <div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password">
+                    <span id="password-error" class="error-message"></span>
+                </div>
+
+                <div>
+                    <label for="department">Department:</label>
+                    <select 
+                        id="department" 
+                        class="dropdown">
+                        <option disabled selected value="">Choose department</option>
+                    </select>
+                    <span id="department-error" class="error-message"></span>
+                </div>
+
+                <div class="toggle">
+                    <input type="checkbox" id="is-admin"/>
+                    <label>Admin</label>
+                </div>
+
+                <div class="center-content">
+                    <button type="submit">
+                        Add employee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

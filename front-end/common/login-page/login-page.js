@@ -1,4 +1,5 @@
 import { UserService } from '../../services/user.service.js';
+import { EmployeeService } from '../../services/employee.service.js';
 import { HashHelper } from '../../helpers/hash.helper.js';
 import { UrlHelper} from '../../helpers/url.helper.js'
 import { DataValidationHelper} from '../../helpers/data-validation.helper.js'
@@ -10,6 +11,7 @@ window.bodyLoaded = bodyLoaded;
 window.login = login;
 
 const userService = new UserService();
+const employeeService = new EmployeeService();
 const hashHelper = new HashHelper();
 const urlHelper = new UrlHelper();
 const dataValidationHelper = new DataValidationHelper();
@@ -68,7 +70,7 @@ async function login() {
         isLoggedIn = await userService.login(userData);
     }
     else {
-        isLoggedIn = await userService.employeeLogin(userData);
+        isLoggedIn = await employeeService.login(userData);
     }
     
     if (!isLoggedIn) {

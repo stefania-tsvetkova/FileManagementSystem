@@ -1,0 +1,55 @@
+.title {
+    text-align: center;
+}
+
+.centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centered-form {
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.centered-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.centered-form input[type="text"],
+.centered-form input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.centered-form div {
+    margin-bottom: 10px;
+}
+
+.centered-form button {
+    margin: auto;
+}
+
+.dropdown {
+    width: 100%;
+    border: 1px solid lightgray;
+}
+
+.toggle {
+    display: flex;
+}
+
+.toggle * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.toggle label {
+    margin-left: 5px;
+}

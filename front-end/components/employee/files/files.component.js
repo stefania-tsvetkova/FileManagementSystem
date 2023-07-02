@@ -14,7 +14,7 @@ const userSessionService = new UserSessionService();
 const dateTimeHelper = new DateTimeHelper();
 
 function bodyLoaded() {
-    // we don't await these async function so they can be executed parallelly
+    // we don't await these async functions so they can be executed parallelly
     updateFilesTable();
 }
 

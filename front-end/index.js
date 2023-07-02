@@ -4,9 +4,15 @@ import { UserTypes } from './constants/user-types.constants.js';
 
 const userSessionService = new UserSessionService();
 const urlHelper = new UrlHelper();
+
+console.log(userSessionService.isUserLoggedIn());
+console.log(userSessionService.getCurrentUserType());
+
     
 const url = userSessionService.isUserLoggedIn() ?
-urlHelper.constructUrl('files', UserTypes.User) : 
-urlHelper.constructUrl('register', UserTypes.User);
+    (userSessionService.getCurrentUserType() != UserTypes.User ?
+        urlHelper.constructUrl('files', UserTypes.Employee) :
+        urlHelper.constructUrl('files', UserTypes.User)) :
+    urlHelper.constructUrl('register', UserTypes.User);
 
 window.location.replace(url);
