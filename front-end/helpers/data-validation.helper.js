@@ -16,4 +16,8 @@ export class DataValidationHelper {
         const passwordRegex = /^[a-zA-Z0-9]{5,50}$/;
         return passwordRegex.test(password);
     }
+
+    isPasswordConfirmationValid(password, confirmPassword) {
+        return password === confirmPassword;
+    }
 }

@@ -12,6 +12,7 @@ export class FormHelper {
             return false;
         }
     
+        this.removeError(input.id);
         return true;
     }
     
@@ -21,11 +22,17 @@ export class FormHelper {
             return false;
         }
     
+        this.removeError(input.id);
         return true;
     }
 
     displayError(inputId, errorMessage) {
         const errorElement = document.getElementById(`${inputId}-error`);
         errorElement.textContent = errorMessage;
+    }
+
+    removeError(inputId) {
+        const errorElement = document.getElementById(`${inputId}-error`);
+        errorElement.textContent = '';
     }
 }

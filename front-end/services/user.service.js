@@ -57,4 +57,28 @@ export class UserService {
         userSessionService.removeCurrentUser();
         window.location.replace('../../../index.html');
     }
+
+    async validatePassword(userId, passwordHash) {
+        let data = new URLSearchParams({
+            userId: userId,
+            passwordHash: passwordHash
+        });
+
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/validateUserPassword.php`, data)
+            .catch(_ => notificationService.error('Old password validation unsuccessful due to a server error'));
+
+        return response === '1';
+    }
+
+    async changePassword(userId, passwordHash) {
+        let data = new URLSearchParams({
+            userId: userId,
+            passwordHash: passwordHash
+        });
+
+        const response = await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/changePassword.php`, data)
+            .catch(_ => notificationService.error('Change password due to a server error'));
+
+        return response === '1';
+    }
 }

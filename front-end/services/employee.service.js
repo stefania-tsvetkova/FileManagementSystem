@@ -55,4 +55,28 @@ export class EmployeeService {
 
         return response === '1';
     }
+
+    async validatePassword(userId, passwordHash) {
+        let data = new URLSearchParams({
+            userId: userId,
+            passwordHash: passwordHash
+        });
+
+        const response = await requestService.get(`../../../../${SERVER_CODE_DIRECTORY}/validateEmployeePassword.php`, data)
+            .catch(_ => notificationService.error('Old password validation unsuccessful due to a server error'));
+            
+        return response === '1';
+    }
+
+    async changePassword(employeeId, passwordHash) {
+        let data = new URLSearchParams({
+            employeeId: employeeId,
+            passwordHash: passwordHash
+        });
+
+        const response = await requestService.put(`../../../../${SERVER_CODE_DIRECTORY}/changeEmployeePassword.php`, data)
+            .catch(_ => notificationService.error('Change password due to a server error'));
+
+        return response === '1';
+    }
 }

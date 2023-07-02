@@ -22,7 +22,7 @@ let userType;
 async function bodyLoaded() {
     await fetch('../../../common/login-page/login-page.html')
         .then(response => response.text())
-        .then(loginPageHtml => document.body.insertAdjacentHTML('afterbegin', loginPageHtml));
+        .then(pageHtml => document.body.insertAdjacentHTML('afterbegin', pageHtml));
 
     getUserType();
     if (userType == UserTypes.Employee.toLowerCase()) {
@@ -56,22 +56,17 @@ async function bodyLoaded() {
 async function login() {
     formHelper.clearFormErrors();
     
-    const data = getLoginData();
+    const formData = getFormData();
 
-    const isFormValid = await validateForm(data);
+    const isFormValid = await validateForm(formData);
     if (!isFormValid) {
         return;
     }
     
-    const userData = await getUserData(data);
+    const userData = await getUserData(formData);
 
-    let isLoggedIn;
-    if (userType == UserTypes.User.toLowerCase()) {
-        isLoggedIn = await userService.login(userData);
-    }
-    else {
-        isLoggedIn = await employeeService.login(userData);
-    }
+    const service = userType == UserTypes.User.toLowerCase() ? userService : employeeService;
+    let isLoggedIn = await service.login(userData);
     
     if (!isLoggedIn) {
         formHelper.displayError('login-button', 'Username or password is incorrect');
@@ -92,7 +87,7 @@ function getUserType() {
     userType = urlParts[userTypeIndex];
 }
 
-function getLoginData() {
+function getFormData() {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
 

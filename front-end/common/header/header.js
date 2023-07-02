@@ -34,12 +34,16 @@ function addUserHeaderLinks() {
     const filesUrl = urlHelper.constructUrl('files', UserTypes.User);
     document.getElementById('files-button').setAttribute('href', filesUrl);
     
+    const changePasswordUrl = urlHelper.constructUrl('change-password', UserTypes.User);
+    document.getElementById('change-password-button').setAttribute('href', changePasswordUrl);
 }
 
 function addEmployeeHeaderLinks() {
     const filesUrl = urlHelper.constructUrl('files', UserTypes.Employee);
     document.getElementById('files-button').setAttribute('href', filesUrl);
     
+    const changePasswordUrl = urlHelper.constructUrl('change-password', UserTypes.Employee);
+    document.getElementById('change-password-button').setAttribute('href', changePasswordUrl);
 }
 
 function addAdminHeaderLinks() {
@@ -48,4 +52,7 @@ function addAdminHeaderLinks() {
     
     const employeesUrl = urlHelper.constructUrl('employees', UserTypes.Admin);
     document.getElementById('employees-button').setAttribute('href', employeesUrl);
+    
+    const changePasswordUrl = urlHelper.constructUrl('change-password', UserTypes.Employee);
+    document.getElementById('change-password-button').setAttribute('href', changePasswordUrl);
 }
